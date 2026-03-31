@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Slope</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a1a;overflow:hidden;font-family:Arial,sans-serif}
+canvas{display:block;margin:0 auto}
+#ui{position:fixed;top:16px;left:50%;transform:translateX(-50%);text-align:center;color:#fff;pointer-events:none;text-shadow:0 0 10px rgba(0,200,255,.8)}
+#score{font-size:36px;font-weight:700;color:#00e5ff}
+#best{font-size:14px;color:#666;margin-top:2px}
+#msg{font-size:22px;margin-top:8px;color:#fff}
+#hint{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);font-size:13px;color:#444;font-family:Arial,sans-serif}
+</style></head><body>
+<canvas id="c"></canvas>
+<div id="ui"><div id="score">0</div><div id="best">BEST: 0</div><div id="msg">Press SPACE or click to start</div></div>
+<div id="hint">← → / A D to steer</div>
+<script>
+const cv=document.getElementById('c');
+const ctx=cv.getContext('2d');
+let W,H;
+
+function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+
+const TILE=48,COLS=10,SPEED_INIT=6,ACCEL=0.001;
+let ball,tiles,score,best=0,speed,state,frame,keys={};
+
+function init(){
+  ball={x:W/2,y:H*0.35,vx:0,vy:0,r:14,dead:false,trail:[]};
+  tiles=[];score=0;speed=SPEED_INIT;frame=0;state='idle';
+  genInitialTiles();
+  document.getElementById('msg').textContent='Press SPACE or click to start';
+}
+
+function genInitialTiles(){
+  // Generate a flat platform to start
+  const startRow=Math.floor(H/TILE)+4;
+  for(let row=0;row<startRow+30;row++){
+    const cx=Math.floor(COLS/2);
+    const hw=3;
+    let gapStart=cx-hw,gapEnd=cx+hw;
+    if(row>5){
+      gapStart=2+Math.floor(Math.random()*(COLS-6));
+      gapEnd=gapStart+2+Math.floor(Math.random()*3);
+    }
+    for(let c=0;c<COLS;c++){
+      if(c<gapStart||c>gapEnd){
+        tiles.push({x:c*TILE-(COLS*TILE-W)/2,y:row*TILE-H*0.5,w:TILE-2,h:TILE-2,alive:true,color:tileColor(row)});
+      }
+    }
+  }
+}
+
+function tileColor(row){
+  const hue=(row*7)%360;
+  return`hsl(${hue},70%,40%)`;
+}
+
+function addRow(baseY){
+  const row=Math.round(baseY/TILE);
+  const gapStart=2+Math.floor(Math.random()*(COLS-6));
+  const gapEnd=gapStart+2+Math.floor(Math.random()*3);
+  for(let c=0;c<COLS;c++){
+    if(c<gapStart||c>gapEnd){
+      tiles.push({x:c*TILE-(COLS*TILE-W)/2,y:baseY,w:TILE-2,h:TILE-2,alive:true,color:tileColor(row)});
+    }
+  }
+}
+
+function start(){
+  state='play';
+  document.getElementById('msg').textContent='';
+}
+
+function die(){
+  state='dead';
+  if(score>best)best=score;
+  document.getElementById('best').textContent='BEST: '+best;
+  document.getElementById('msg').textContent='GAME OVER — click or SPACE to restart';
+}
+
+let lastRow=null;
+
+function tick(){
+  requestAnimationFrame(tick);
+  if(state==='idle'||state==='dead'){draw();return}
+
+  frame++;
+  score=Math.floor(frame/6);
+  speed=SPEED_INIT+frame*ACCEL;
+  document.getElementById('score').textContent=score;
+
+  // Input
+  const steer=0.55;
+  if(keys['ArrowLeft']||keys['a']||keys['A'])ball.vx-=steer;
+  if(keys['ArrowRight']||keys['d']||keys['D'])ball.vx+=steer;
+  ball.vx*=0.82;
+
+  // Gravity
+  ball.vy+=0.4;
+  ball.x+=ball.vx;
+  ball.y+=ball.vy;
+
+  // Scroll tiles down
+  tiles.forEach(t=>{t.y+=speed});
+
+  // Remove tiles that scrolled off top
+  tiles=tiles.filter(t=>t.y<H+100);
+
+  // Add new rows at top
+  const topY=tiles.reduce((m,t)=>Math.min(m,t.y),9999);
+  if(topY>-TILE*2){
+    const newY=topY-TILE;
+    if(lastRow!==newY){lastRow=newY;addRow(newY);}
+  }
+
+  // Collision
+  let onGround=false;
+  for(const t of tiles){
+    if(!t.alive)continue;
+    const bLeft=ball.x-ball.r, bRight=ball.x+ball.r;
+    const bTop=ball.y-ball.r, bBottom=ball.y+ball.r;
+    const tRight=t.x+t.w,tBottom=t.y+t.h;
+    if(bRight>t.x&&bLeft<tRight&&bBottom>t.y&&bTop<tBottom){
+      // Resolve from which side
+      const overlapLeft=bRight-t.x, overlapRight=tRight-bLeft;
+      const overlapTop=bBottom-t.y, overlapBottom=tBottom-bTop;
+      const minH=Math.min(overlapLeft,overlapRight);
+      const minV=Math.min(overlapTop,overlapBottom);
+      if(minV<=minH){
+        if(overlapTop<overlapBottom){ball.y=t.y-ball.r;if(ball.vy>0)ball.vy=0;onGround=true;}
+        else{ball.y=tBottom+ball.r;if(ball.vy<0)ball.vy=0;}
+      } else {
+        if(overlapLeft<overlapRight){ball.x=t.x-ball.r;}
+        else{ball.x=tRight+ball.r;}
+        ball.vx*=-0.3;
+      }
+    }
+  }
+
+  // Trail
+  ball.trail.push({x:ball.x,y:ball.y});
+  if(ball.trail.length>18)ball.trail.shift();
+
+  // Fall off bottom or sides
+  if(ball.y>H+50)die();
+  if(ball.x<-50||ball.x>W+50)die();
+
+  draw();
+}
+
+function draw(){
+  // Neon background
+  ctx.fillStyle='#0a0a1a';
+  ctx.fillRect(0,0,W,H);
+
+  // Grid lines (perspective effect)
+  ctx.strokeStyle='rgba(0,200,255,0.06)';
+  ctx.lineWidth=1;
+  for(let x=0;x<W;x+=48){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=48){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  // Tiles
+  tiles.forEach(t=>{
+    if(t.y>H+10||t.y+t.h<-10)return;
+    const grad=ctx.createLinearGradient(t.x,t.y,t.x,t.y+t.h);
+    grad.addColorStop(0,t.color);
+    grad.addColorStop(1,'#111');
+    ctx.fillStyle=grad;
+    ctx.fillRect(t.x,t.y,t.w,t.h);
+    ctx.strokeStyle='rgba(0,255,255,0.3)';
+    ctx.lineWidth=1;
+    ctx.strokeRect(t.x,t.y,t.w,t.h);
+  });
+
+  // Trail
+  ball.trail.forEach((p,i)=>{
+    const alpha=i/ball.trail.length*0.6;
+    const size=ball.r*(i/ball.trail.length);
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,size,0,Math.PI*2);
+    ctx.fillStyle=`rgba(0,229,255,${alpha})`;
+    ctx.fill();
+  });
+
+  // Ball
+  const ballGrad=ctx.createRadialGradient(ball.x-4,ball.y-4,2,ball.x,ball.y,ball.r);
+  ballGrad.addColorStop(0,'#ffffff');
+  ballGrad.addColorStop(0.4,'#00e5ff');
+  ballGrad.addColorStop(1,'#0044aa');
+  ctx.beginPath();
+  ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);
+  ctx.fillStyle=ballGrad;
+  ctx.fill();
+  ctx.strokeStyle='rgba(0,229,255,0.8)';
+  ctx.lineWidth=2;
+  ctx.stroke();
+
+  // Glow
+  ctx.beginPath();
+  ctx.arc(ball.x,ball.y,ball.r+6,0,Math.PI*2);
+  ctx.strokeStyle='rgba(0,229,255,0.2)';
+  ctx.lineWidth=4;
+  ctx.stroke();
+}
+
+document.addEventListener('keydown',e=>{
+  keys[e.key]=true;
+  if(e.key===' '||e.key==='Space'){
+    e.preventDefault();
+    if(state==='idle')start();
+    else if(state==='dead')init();
+  }
+});
+document.addEventListener('keyup',e=>keys[e.key]=false);
+cv.addEventListener('click',()=>{
+  if(state==='idle')start();
+  else if(state==='dead')init();
+});
+
+init();
+requestAnimationFrame(tick);
+</script>
+</body></html>

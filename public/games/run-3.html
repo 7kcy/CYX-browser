@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Run 3</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;overflow:hidden;font-family:Arial,sans-serif}
+canvas{display:block;margin:0 auto}
+#hud{position:fixed;top:12px;left:50%;transform:translateX(-50%);color:#fff;font-size:16px;font-weight:700;text-align:center;pointer-events:none;text-shadow:0 0 8px rgba(150,100,255,.8)}
+#msg{position:fixed;top:45%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:24px;font-weight:700;text-align:center;pointer-events:none;line-height:1.5}
+</style></head><body>
+<canvas id="c"></canvas>
+<div id="hud">Distance: <span id="dist">0</span>m &nbsp;|&nbsp; Best: <span id="best">0</span>m</div>
+<div id="msg">Press SPACE or click to run</div>
+<script>
+const cv=document.getElementById('c');
+const ctx=cv.getContext('2d');
+let W,H;
+function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+
+// Tunnel parameters
+const TUNNEL_SEGS=20;     // visible tunnel segments
+const SEG_DEPTH=120;      // depth per segment (px in 3D)
+const TUNNEL_COLS=6;      // columns in tunnel ring
+const TUNNEL_ROWS=1;      // the tunnel is a circle of tiles
+const TUBE_R=200;         // tunnel radius
+const PLAYER_SIZE=28;
+
+let player,segments,score,best=0,speed,frame,state,gravity,rotation;
+
+function makeSegment(z,holeStart){
+  const tiles=[];
+  for(let c=0;c<TUNNEL_COLS;c++){
+    const missing=(c>=holeStart&&c<holeStart+2);
+    tiles.push(!missing);
+  }
+  return{z,tiles,color:`hsl(${(z*3)%360},60%,30%)`};
+}
+
+function init(){
+  player={angle:0,slot:Math.floor(TUNNEL_COLS/2),y:0,vy:0,jumping:false,dead:false};
+  rotation=0;gravity=0.4;speed=3;frame=0;score=0;state='idle';
+  segments=[];
+  for(let i=0;i<TUNNEL_SEGS+5;i++){
+    const holeStart=Math.floor(Math.random()*(TUNNEL_COLS-2));
+    segments.push(makeSegment(i*SEG_DEPTH,holeStart));
+  }
+  document.getElementById('msg').textContent='Press SPACE or click to run';
+}
+
+function start(){state='play';document.getElementById('msg').textContent='';}
+
+function die(){
+  state='dead';
+  if(score>best)best=score;
+  document.getElementById('best').textContent=best;
+  document.getElementById('msg').textContent=`Game Over!\n${score}m\nPress SPACE to restart`;
+}
+
+let keys={};
+document.addEventListener('keydown',e=>{
+  keys[e.key]=true;
+  if(state==='idle'){start();return;}
+  if(state==='dead'){init();return;}
+  if((e.key===' '||e.key==='ArrowUp')&&!player.jumping){player.vy=-10;player.jumping=true;}
+  if(e.key==='ArrowLeft'){player.slot=Math.max(0,player.slot-1);}
+  if(e.key==='ArrowRight'){player.slot=Math.min(TUNNEL_COLS-1,player.slot+1);}
+  e.preventDefault();
+});
+document.addEventListener('keyup',e=>keys[e.key]=false);
+cv.addEventListener('click',()=>{
+  if(state==='idle')start();
+  else if(state==='dead')init();
+  else if(!player.jumping){player.vy=-10;player.jumping=true;}
+});
+
+let touchSX=0;
+cv.addEventListener('touchstart',e=>{touchSX=e.touches[0].clientX;if(state==='idle')start();else if(state==='dead')init();},{passive:true});
+cv.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-touchSX;
+  if(Math.abs(dx)<20&&!player.jumping){player.vy=-10;player.jumping=true;}
+  else if(dx<-30&&player.slot>0)player.slot--;
+  else if(dx>30&&player.slot<TUNNEL_COLS-1)player.slot++;
+},{passive:true});
+
+function tick(){
+  requestAnimationFrame(tick);
+  if(state!=='play'){drawScene();return;}
+  frame++;
+  speed=3+frame*0.001;
+  score=Math.floor(frame/6);
+  document.getElementById('dist').textContent=score;
+
+  // Gravity on player within tunnel
+  player.vy+=gravity;
+  player.y+=player.vy;
+  if(player.y>0){player.y=0;player.vy=0;player.jumping=false;}
+
+  // Slowly rotate tunnel for effect
+  rotation+=0.004;
+
+  // Advance tunnel
+  segments.forEach(s=>s.z-=speed);
+
+  // Remove passed segments and add new
+  if(segments[0].z<-SEG_DEPTH){
+    segments.shift();
+    const lastZ=segments[segments.length-1].z+SEG_DEPTH;
+    const holeStart=Math.floor(Math.random()*(TUNNEL_COLS-2));
+    segments.push(makeSegment(lastZ,holeStart));
+  }
+
+  // Check collision with current segment (closest one player is on)
+  const closest=segments.find(s=>s.z>=0&&s.z<SEG_DEPTH);
+  if(closest&&!closest.tiles[player.slot]&&player.y>=0){
+    die();
+  }
+
+  drawScene();
+}
+
+function drawScene(){
+  ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
+
+  // Draw star background
+  ctx.fillStyle='rgba(255,255,255,0.4)';
+  for(let i=0;i<80;i++){
+    const sx=(Math.sin(i*17.3+frame*0.002)*W/2+W/2);
+    const sy=(Math.cos(i*13.7+frame*0.001)*H/2+H/2);
+    ctx.fillRect(sx,sy,1.5,1.5);
+  }
+
+  // Draw tunnel in perspective
+  const CX=W/2,CY=H/2;
+  const FOV=500;
+
+  // Back to front
+  for(let i=segments.length-1;i>=0;i--){
+    const seg=segments[i];
+    if(seg.z<-SEG_DEPTH||seg.z>FOV*2)continue;
+    const scale=FOV/(FOV+seg.z);
+    const r=TUBE_R*scale;
+    const prevSeg=segments[i+1];
+
+    for(let c=0;c<TUNNEL_COLS;c++){
+      if(!seg.tiles[c])continue;
+      const a1=(c/TUNNEL_COLS)*Math.PI*2+rotation;
+      const a2=((c+1)/TUNNEL_COLS)*Math.PI*2+rotation;
+
+      // Current ring points
+      const x1=CX+Math.cos(a1)*r, y1=CY+Math.sin(a1)*r;
+      const x2=CX+Math.cos(a2)*r, y2=CY+Math.sin(a2)*r;
+
+      if(prevSeg){
+        const prevZ=prevSeg.z;
+        const prevScale=FOV/(FOV+prevZ);
+        const pr=TUBE_R*prevScale;
+        const px1=CX+Math.cos(a1)*pr, py1=CY+Math.sin(a1)*pr;
+        const px2=CX+Math.cos(a2)*pr, py2=CY+Math.sin(a2)*pr;
+
+        const shade=Math.max(0,1-seg.z/600);
+        ctx.fillStyle=`hsla(${(c*60+frame)%360},60%,${20+shade*30}%,0.9)`;
+        ctx.strokeStyle=`rgba(0,0,0,0.4)`;
+        ctx.lineWidth=1;
+        ctx.beginPath();
+        ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
+        ctx.lineTo(px2,py2);ctx.lineTo(px1,py1);
+        ctx.closePath();
+        ctx.fill();ctx.stroke();
+      }
+    }
+  }
+
+  // Player
+  if(state!=='idle'){
+    const playerAngle=(player.slot/TUNNEL_COLS)*Math.PI*2+rotation+(0.5/TUNNEL_COLS)*Math.PI*2;
+    const playerR=TUBE_R*0.92+player.y*0.5;
+    const px=W/2+Math.cos(playerAngle)*playerR;
+    const py=H/2+Math.sin(playerAngle)*playerR;
+
+    ctx.save();
+    ctx.translate(px,py);
+    ctx.rotate(playerAngle+Math.PI/2);
+
+    // Glow
+    ctx.shadowBlur=20;ctx.shadowColor='#a78bfa';
+
+    // Body
+    const pGrad=ctx.createRadialGradient(-4,-4,2,0,0,PLAYER_SIZE/2);
+    pGrad.addColorStop(0,'#fff');
+    pGrad.addColorStop(0.4,'#a78bfa');
+    pGrad.addColorStop(1,'rgba(100,50,200,0.3)');
+    ctx.fillStyle=pGrad;
+    ctx.beginPath();
+    ctx.ellipse(0,0,PLAYER_SIZE/2,PLAYER_SIZE/2.5,0,0,Math.PI*2);
+    ctx.fill();
+    ctx.shadowBlur=0;
+
+    // Visor
+    ctx.fillStyle='rgba(0,200,255,0.6)';
+    ctx.beginPath();ctx.ellipse(0,-4,10,7,0,0,Math.PI*2);ctx.fill();
+
+    ctx.restore();
+  }
+}
+
+init();
+requestAnimationFrame(tick);
+</script>
+</body></html>
