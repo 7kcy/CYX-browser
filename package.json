@@ -1,7 +1,17 @@
 {
   "name": "cyclone-x",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "CycloneX Browser — AI Search + Unblocked Games",
   "engines": {
     "node": "22.x"
+  },
+  "scripts": {
+    "build": "echo 'Static build — nothing to compile'",
+    "start": "npx serve public -p 3000",
+    "dev": "npx serve public -p 3000 --cors"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "serve": "^14.2.0"
   }
 }

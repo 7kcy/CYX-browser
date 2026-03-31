@@ -1,17 +1,33 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "api/search.js", "use": "@vercel/node" },
-    { "src": "api/proxy.js",  "use": "@vercel/node" },
-    { "src": "public/**",     "use": "@vercel/static" }
+  "buildCommand": "npm run build",
+  "outputDirectory": "public",
+  "rewrites": [
+    { "source": "/api/games",    "destination": "/api/games.js" },
+    { "source": "/api/search",   "destination": "/api/search.js" },
+    { "source": "/api/game/:id", "destination": "/api/game.js" }
   ],
-  "routes": [
-    { "src": "/api/search", "dest": "/api/search.js" },
-    { "src": "/api/proxy",  "dest": "/api/proxy.js"  },
+  "headers": [
     {
-      "src": "/ac/(.*)",
-      "dest": "/api/proxy.js?url=https%3A%2F%2Fduckduckgo.com%2Fac%2F$1"
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options",        "value": "SAMEORIGIN" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy",        "value": "no-referrer-when-downgrade" }
+      ]
     },
-    { "src": "/(.*)", "dest": "/public/$1" }
+    {
+      "source": "/games/:path*",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/icons/:path*",
+      "headers": [
+        { "key": "Cache-Control",               "value": "public, max-age=86400" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    }
   ]
 }
