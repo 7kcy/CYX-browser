@@ -887,9 +887,13 @@
       margin-bottom: 20px; margin-top: 8px;
     }
     .games-title-text {
-      font-family: var(--font-display); font-size: 52px; font-weight: 800;
-      letter-spacing: -3px; color: var(--text); line-height: 1;
+      font-family: var(--font-display); font-size: 72px; font-weight: 800;
+      letter-spacing: -5px; color: var(--text); line-height: 1;
       text-shadow: 0 0 60px rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.18);
+      transition: text-shadow 0.4s;
+    }
+    .games-title-sub {
+      font-family: var(--font-mono); font-size: 12px; color: var(--text-3); letter-spacing: 0.10em;
     }
     .games-title-text span { color: var(--accent); font-weight: 400; }
 
@@ -949,8 +953,8 @@
     /* Featured row (big cards like NebulaPlay) */
     .games-featured-row {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-      gap: 12px; margin-bottom: 28px;
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 10px; margin-bottom: 28px;
     }
     .game-card-big {
       border-radius: 14px; overflow: hidden; cursor: pointer;
@@ -979,11 +983,12 @@
       flex: 1; min-width: 0;
     }
     .game-card-big-tag {
-      background: rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.15);
-      color: var(--accent); font-size: 9px; font-weight: 700;
-      padding: 2px 6px; border-radius: 4px; letter-spacing: 0.06em;
+      background: rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.12);
+      color: var(--accent); font-size: 8px; font-weight: 700;
+      padding: 2px 5px; border-radius: 4px; letter-spacing: 0.06em;
       flex-shrink: 0; margin-left: 4px;
-      border: 1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.25);
+      border: 1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.2);
+      text-transform: uppercase;
     }
 
     /* All games grid (small tiles) */
@@ -1034,7 +1039,7 @@
     @media (max-width: 600px) {
       .games-featured-row { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
       .games-grid { grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 6px; }
-      .games-title-text { font-size: 36px; letter-spacing: -2px; }
+      .games-title-text { font-size: 48px; letter-spacing: -3px; }
     }
   </style>
 </head>
@@ -1257,6 +1262,7 @@
 <div class="games-screen hidden" id="gamesScreen">
   <div class="games-title-block">
     <div class="games-title-text">Cyclone X <span>Games</span></div>
+    <div class="games-title-sub">UNBLOCKED · PLAY ANYWHERE</div>
   </div>
   <div class="games-search-wrap">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-3);flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -1956,10 +1962,9 @@ function _gameSlug(name) {
 function _gameThumbHTML(g, big) {
   const slug = _gameSlug(g.name);
   const iconSrc = '/icons/' + slug + '.svg';
-  // No bg color - just the icon fills the space
-  return `<div style="width:100%;aspect-ratio:1/1;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:${big?'52':'30'}px;background:${g.color}20;">
-    <img src="${iconSrc}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-    <span style="display:none;font-size:${big?'48':'30'}px;position:absolute;">${g.emoji}</span>
+  return `<div style="width:100%;aspect-ratio:1/1;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:${big?'52':'30'}px;background:transparent;position:relative;">
+    <img src="${iconSrc}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+    <span style="display:none;font-size:${big?'48':'30'}px;position:absolute;width:100%;height:100%;align-items:center;justify-content:center;background:${g.color}22;">${g.emoji}</span>
   </div>`;
 }
 
