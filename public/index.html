@@ -2080,18 +2080,110 @@ function _getBestThumb(g) {
   return null;
 }
 
+const KNOWN_LOCAL_ICONS = {
+  "1v1-lol": "/icons/1v1-lol.svg",
+  "2048": "/icons/2048.jpg",
+  "agar-io": "/icons/agar-io.svg",
+  "asteroids": "/icons/asteroids.svg",
+  "backgammon": "/icons/backgammon.svg",
+  "basketball-stars": "/icons/basketball-stars.svg",
+  "battleship": "/icons/battleship.svg",
+  "bloons-td-5": "/icons/bloons-td-5.svg",
+  "bloxorz": "/icons/bloxorz.svg",
+  "bob-the-robber": "/icons/bob-the-robber.svg",
+  "bonk-io": "/icons/bonk-io.svg",
+  "boxing-random": "/icons/boxing-random.svg",
+  "breakout": "/icons/breakout.svg",
+  "buildnow-gg": "/icons/buildnow-gg.svg",
+  "burnout-drift": "/icons/burnout-drift.svg",
+  "checkers": "/icons/checkers.svg",
+  "chess": "/icons/chess.svg",
+  "cookie-clicker": "/icons/cookie-clicker.svg",
+  "crazy-cars": "/icons/crazy-cars.svg",
+  "crossy-road": "/icons/crossy-road.svg",
+  "cubes-2048": "/icons/cubes-2048.svg",
+  "cut-the-rope": "/icons/cut-the-rope.jpg",
+  "diep-io": "/icons/diep-io.svg",
+  "dino-run": "/icons/dino-run.svg",
+  "drift-boss": "/icons/drift-boss.svg",
+  "drift-hunters": "/icons/drift-hunters.svg",
+  "ev-io": "/icons/ev-io.svg",
+  "fireboy-watergirl": "/icons/fireboy-watergirl.svg",
+  "fireboy-watergirl-2": "/icons/fireboy-watergirl-2.svg",
+  "flappy-bird": "/icons/flappy-bird.svg",
+  "football-legends": "/icons/football-legends.svg",
+  "friday-night-funkin": "/icons/friday-night-funkin.svg",
+  "geometry-dash-lite": "/icons/geometry-dash-lite.svg",
+  "getaway-shootout": "/icons/getaway-shootout.svg",
+  "gold-miner": "/icons/gold-miner.svg",
+  "golf-battle": "/icons/golf-battle.svg",
+  "happy-wheels": "/icons/happy-wheels.svg",
+  "highway-racer-3d": "/icons/highway-racer-3d.svg",
+  "hole-io": "/icons/hole-io.svg",
+  "jetpack-joyride": "/icons/jetpack-joyride.jpg",
+  "kingdom-rush": "/icons/kingdom-rush.svg",
+  "krunker": "/icons/krunker.svg",
+  "mahjong": "/icons/mahjong.jpg",
+  "memory-match": "/icons/memory-match.svg",
+  "minecraft-classic": "/icons/minecraft-classic.jpg",
+  "minesweeper": "/icons/minesweeper.svg",
+  "moomoo-io": "/icons/moomoo-io.svg",
+  "moto-x3m": "/icons/moto-x3m.jpg",
+  "moto-x3m-pool-party": "/icons/moto-x3m-pool-party.jpg",
+  "narrow-one": "/icons/narrow-one.svg",
+  "pandemic": "/icons/pandemic.svg",
+  "paper-io-2": "/icons/paper-io-2.svg",
+  "penalty-shooters": "/icons/penalty-shooters.svg",
+  "pong": "/icons/pong.svg",
+  "pong-2p": "/icons/pong-2p.svg",
+  "racing-limits": "/icons/racing-limits.svg",
+  "red-ball-4": "/icons/red-ball-4.svg",
+  "road-fury": "/icons/road-fury.svg",
+  "rooftop-snipers": "/icons/rooftop-snipers.svg",
+  "run-3": "/icons/run-3.svg",
+  "shell-shockers": "/icons/shell-shockers.svg",
+  "simon-says": "/icons/simon-says.svg",
+  "slither-io": "/icons/slither-io.svg",
+  "slope": "/icons/slope.jpg",
+  "smash-karts": "/icons/smash-karts.jpg",
+  "snail-bob": "/icons/snail-bob.svg",
+  "snake": "/icons/snake.svg",
+  "soccer-random": "/icons/soccer-random.svg",
+  "solitaire": "/icons/solitaire.jpg",
+  "space-is-key": "/icons/space-is-key.svg",
+  "space-waves": "/icons/space-waves.svg",
+  "stickman-hook": "/icons/stickman-hook.svg",
+  "stickman-soccer": "/icons/stickman-soccer.svg",
+  "subway-surfers": "/icons/subway-surfers.svg",
+  "sudoku": "/icons/sudoku.jpg",
+  "surviv-io": "/icons/surviv-io.svg",
+  "temple-run-2": "/icons/temple-run-2.svg",
+  "tennis-legends": "/icons/tennis-legends.svg",
+  "tetris": "/icons/tetris.svg",
+  "tic-tac-toe": "/icons/tic-tac-toe.svg",
+  "traffic-jam-3d": "/icons/traffic-jam-3d.svg",
+  "tunnel-rush": "/icons/tunnel-rush.svg",
+  "venge-io": "/icons/venge-io.svg",
+  "vex-7": "/icons/vex-7.svg",
+  "wings-io": "/icons/wings-io.svg",
+  "wordle": "/icons/wordle.svg",
+  "wormate-io": "/icons/wormate-io.svg",
+  "zombs-royale": "/icons/zombs-royale.svg",
+};
+
 function _gameThumbHTML(g, big) {
   const slug = _gameSlug(g.name);
-  // Local icons are highest priority (downloaded PNGs/JPGs)
-  const local1 = `/icons/${slug}.svg`;
-  const local2 = `/icons/${slug}.jpg`;
-  const local3 = `/icons/${slug}.png`;
+  // Use known local icon if available, otherwise go straight to CDN (no 404s)
+  const localIcon = KNOWN_LOCAL_ICONS[slug] || null;
   const cdn1   = _getBestThumb(g);
   const fb4    = `https://img.cdn.famobi.com/portal/html5games/images/tmp/${slug.split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join('')}Teaser.jpg`;
   const fb5    = `https://img.gamemonetize.com/${slug}/512x384.jpg`;
+  const firstSrc = localIcon || cdn1 || fb4;
+  const fb2 = localIcon ? (cdn1 || fb4) : fb4;
+  const fb3 = localIcon ? fb4 : fb5;
   return `<div style="width:100%;aspect-ratio:3/4;overflow:hidden;background:linear-gradient(145deg,#1a1a2e,#0d0d1a);position:relative;flex-shrink:0;">
-    <img src="${local1}"
-      data-fb2="${local2}" data-fb3="${local3}" data-fb4="${cdn1}" data-fb5="${fb4}" data-fb6="${fb5}" data-step="0"
+    <img src="${firstSrc}"
+      data-fb2="${fb2}" data-fb3="${fb3}" data-fb4="${fb5}" data-step="0"
       style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity .2s;"
       onerror="_imgFallback(this)" />
     <div class="_thumb-emoji" style="display:none;width:100%;height:100%;position:absolute;top:0;left:0;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:linear-gradient(145deg,#1a1a2e,#0d0d1a);">
