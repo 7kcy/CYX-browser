@@ -2081,14 +2081,17 @@ function _getBestThumb(g) {
 }
 
 function _gameThumbHTML(g, big) {
-  const thumb1 = _getBestThumb(g);
   const slug = _gameSlug(g.name);
-  const fb2 = `https://imgs.crazygames.com/${slug}_16x9/auto/auto/${slug}_16x9-cover.jpg`;
-  const fb3 = `https://img.gamemonetize.com/${slug}/512x384.jpg`;
-  // Encode fallbacks into data attrs to avoid inline JS complexity
+  // Local icons are highest priority (downloaded PNGs/JPGs)
+  const local1 = `/icons/${slug}.png`;
+  const local2 = `/icons/${slug}.jpg`;
+  const local3 = `/icons/${slug}.svg`;
+  const cdn1   = _getBestThumb(g);
+  const fb4    = `https://img.cdn.famobi.com/portal/html5games/images/tmp/${slug.split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join('')}Teaser.jpg`;
+  const fb5    = `https://img.gamemonetize.com/${slug}/512x384.jpg`;
   return `<div style="width:100%;aspect-ratio:3/4;overflow:hidden;background:linear-gradient(145deg,#1a1a2e,#0d0d1a);position:relative;flex-shrink:0;">
-    <img src="${thumb1}"
-      data-fb2="${fb2}" data-fb3="${fb3}" data-step="0"
+    <img src="${local1}"
+      data-fb2="${local2}" data-fb3="${local3}" data-fb4="${cdn1}" data-fb5="${fb4}" data-fb6="${fb5}" data-step="0"
       style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity .2s;"
       onerror="_imgFallback(this)" />
     <div class="_thumb-emoji" style="display:none;width:100%;height:100%;position:absolute;top:0;left:0;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:linear-gradient(145deg,#1a1a2e,#0d0d1a);">
@@ -2101,12 +2104,10 @@ function _gameThumbHTML(g, big) {
 
 function _imgFallback(img) {
   const step = parseInt(img.dataset.step || '0');
-  if (step === 0 && img.dataset.fb2) {
-    img.dataset.step = '1';
-    img.src = img.dataset.fb2;
-  } else if (step === 1 && img.dataset.fb3) {
-    img.dataset.step = '2';
-    img.src = img.dataset.fb3;
+  const chain = [img.dataset.fb2, img.dataset.fb3, img.dataset.fb4, img.dataset.fb5, img.dataset.fb6];
+  if (step < chain.length && chain[step]) {
+    img.dataset.step = step + 1;
+    img.src = chain[step];
   } else {
     img.style.display = 'none';
     const emo = img.parentNode.querySelector('._thumb-emoji');
