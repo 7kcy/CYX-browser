@@ -1976,11 +1976,15 @@ function _gameThumbHTML(g, big) {
   const svgSrc = '/icons/' + slug + '.svg';
   const sz = big ? '52' : '38';
   const bg = g.color + '33';
+  // Use CrazyGames CDN for real screenshots, fallback to SVG icon, then emoji
+  const thumbUrl = 'https://imgs.crazygames.com/' + slug + '_16x9/auto/auto/' + slug + '_16x9-cover.jpg';
+  const thumb2 = 'https://img.gamemonetize.com/' + slug + '/512x384.jpg';
   return `<div style="width:100%;aspect-ratio:4/3;overflow:hidden;display:flex;align-items:center;justify-content:center;background:${bg};position:relative;border-radius:inherit;">
-    <img src="${svgSrc}" style="width:68%;height:68%;object-fit:contain;display:block;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.35));"
-      onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+    <img src="${thumbUrl}"
+      style="width:100%;height:100%;object-fit:cover;display:block;"
+      onerror="this.src='${thumb2}';this.onerror=function(){this.src='${svgSrc}';this.style.objectFit='contain';this.style.width='65%';this.style.height='65%';this.style.padding='10%';this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';}};" />
     <div style="display:none;width:100%;height:100%;position:absolute;align-items:center;justify-content:center;flex-direction:column;background:${bg};">
-      <div style="font-size:${sz}px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4));">${g.emoji}</div>
+      <div style="font-size:${sz}px;">${g.emoji}</div>
     </div>
   </div>`;
 }
@@ -1989,12 +1993,11 @@ function _buildFeaturedCard(g) {
   const card = document.createElement('div');
   card.className = 'game-card-big';
   card.onclick = () => openGameOverlay(g);
-  const catLabel = g.cat.charAt(0).toUpperCase() + g.cat.slice(1);
   card.innerHTML = `
     ${_gameThumbHTML(g, true)}
     <div class="game-card-big-footer">
       <div class="game-card-big-name">${g.name}</div>
-      <div class="game-card-big-tag">${catLabel}</div>
+
     </div>`;
   return card;
 }
