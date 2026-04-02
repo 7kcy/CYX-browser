@@ -1285,7 +1285,7 @@
     <div class="games-cat-pill" onclick="setCat('action',this)">Action</div>
     <div class="games-cat-pill" onclick="setCat('arcade',this)">Arcade</div>
     <div class="games-cat-pill" onclick="setCat('sports',this)">Sports</div>
-    <div class="games-cat-pill" onclick="setCat('2player',this)">2 Player</div>
+    
   </div>
   <!-- Recently Played Section -->
   <div id="gamesRecentSection" style="display:none;">
@@ -1976,9 +1976,8 @@ function _gameThumbHTML(g, big) {
   const svgSrc = '/icons/' + slug + '.svg';
   const sz = big ? '52' : '38';
   const bg = g.color + '33';
-  // SVG icon first — no broken external CDN
-  return `<div style="width:100%;aspect-ratio:4/3;overflow:hidden;display:flex;align-items:center;justify-content:center;background:${bg};position:relative;">
-    <img src="${svgSrc}" style="width:65%;height:65%;object-fit:contain;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));"
+  return `<div style="width:100%;aspect-ratio:4/3;overflow:hidden;display:flex;align-items:center;justify-content:center;background:${bg};position:relative;border-radius:inherit;">
+    <img src="${svgSrc}" style="width:68%;height:68%;object-fit:contain;display:block;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.35));"
       onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
     <div style="display:none;width:100%;height:100%;position:absolute;align-items:center;justify-content:center;flex-direction:column;background:${bg};">
       <div style="font-size:${sz}px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4));">${g.emoji}</div>
@@ -2078,6 +2077,7 @@ function _renderGamesGrid() {
 
   if (_currentCat !== 'all') games = games.filter(g => g.cat === _currentCat);
   if (_currentSearch) games = games.filter(g => g.name.toLowerCase().includes(_currentSearch));
+  games = games.slice().sort((a,b) => a.name.localeCompare(b.name));
 
   if (count) count.textContent = games.length + ' games';
 
@@ -2094,8 +2094,7 @@ function _buildTile(g) {
   tile.className = 'game-tile';
   tile.title = g.name;
   tile.onclick = () => openGameOverlay(g);
-  const catBadge = `<div class="game-cat-badge">${g.cat}</div>`;
-  tile.innerHTML = _gameThumbHTML(g, false) + catBadge + `<div class="game-name">${g.name}</div>`;
+  tile.innerHTML = _gameThumbHTML(g, false) + `<div class="game-name">${g.name}</div>`;
   return tile;
 }
 

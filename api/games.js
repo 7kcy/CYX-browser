@@ -90,7 +90,7 @@ const GAMES = [
   { id:85, name:"Dino Run",            cat:"builtin",  emoji:"🦕", color:"#78716c", builtin:"gdino" }
 ];
 
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
   const { cat, q } = req.query;
   let games = GAMES;
   if (cat && cat !== "all") games = games.filter(g => g.cat === cat);

@@ -4,7 +4,7 @@
 import gamesHandler from "./games.js";
 
 // Re-use the same GAMES array (import trick for Vercel)
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
   const id = parseInt(req.query.id, 10);
   if (!id || isNaN(id)) {
     return res.status(400).json({ error: "Missing or invalid id" });
