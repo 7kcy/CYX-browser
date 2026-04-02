@@ -1,4 +1,3 @@
-// api/search.js
 module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -12,34 +11,27 @@ module.exports = async function handler(req, res) {
       if (!query) return res.status(400).json({ error: "Missing query" });
 
       const GROQ_KEY = process.env.GROQ_API_KEY;
-      if (!GROQ_KEY) return res.status(500).json({ error: "No GROQ_API_KEY set in Vercel environment variables." });
+      if (!GROQ_KEY) return res.status(500).json({ error: "No GROQ_API_KEY" });
 
       const groq = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + GROQ_KEY,
-        },
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + GROQ_KEY },
         body: JSON.stringify({
-          model: "mixtral-8x7b-32768",
+          model: "llama-3.3-70b-versatile",
           max_tokens: 512,
           messages: [
-            { role: "system", content: "You are Cyclone X AI. Give concise helpful answers. Use simple HTML like <b>, <br>, <ul><li> when useful. No markdown." },
-            { role: "user", content: query },
-          ],
-        }),
+            { role: "system", content: "You are Cyclone X AI. Give concise answers using simple HTML: <b>, <br>, <ul><li>. No markdown." },
+            { role: "user", content: query }
+          ]
+        })
       });
 
-      if (!groq.ok) {
-        const t = await groq.text();
-        throw new Error("Groq " + groq.status + ": " + t.slice(0, 200));
-      }
+      if (!groq.ok) { const t = await groq.text(); throw new Error("Groq " + groq.status + ": " + t.slice(0,200)); }
       const data = await groq.json();
       return res.json({ result: data.choices?.[0]?.message?.content || "No response." });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
   }
-
   return res.status(405).json({ error: "Method not allowed" });
 };
