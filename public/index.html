@@ -2083,9 +2083,9 @@ function _getBestThumb(g) {
 function _gameThumbHTML(g, big) {
   const slug = _gameSlug(g.name);
   // Local icons are highest priority (downloaded PNGs/JPGs)
-  const local1 = `/icons/${slug}.png`;
-  const local2 = `/icons/${slug}.jpg`;
-  const local3 = `/icons/${slug}.svg`;
+  const local1 = `/icons/${slug}.svg`;
+  const local2 = `/icons/${slug}.png`;
+  const local3 = `/icons/${slug}.jpg`;
   const cdn1   = _getBestThumb(g);
   const fb4    = `https://img.cdn.famobi.com/portal/html5games/images/tmp/${slug.split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join('')}Teaser.jpg`;
   const fb5    = `https://img.gamemonetize.com/${slug}/512x384.jpg`;
