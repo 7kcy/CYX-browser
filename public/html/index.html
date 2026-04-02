@@ -881,22 +881,6 @@
       .shortcuts-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
-    /* ══ GAMES TITLE ══════════════════════════════════════════ */
-    .games-title-block {
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      margin-bottom: 20px; margin-top: 8px;
-    }
-    .games-title-text {
-      font-family: var(--font-display); font-size: 72px; font-weight: 800;
-      letter-spacing: -5px; color: var(--text); line-height: 1;
-      text-shadow: 0 0 60px rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.18);
-      transition: text-shadow 0.4s;
-    }
-    .games-title-sub {
-      font-family: var(--font-mono); font-size: 12px; color: var(--text-3); letter-spacing: 0.10em;
-    }
-    .games-title-text span { color: var(--accent); font-weight: 400; }
-
     /* ══ GAMES SCREEN ════════════════════════════════════════ */
     .games-screen {
       position: relative; z-index: 5;
@@ -953,55 +937,44 @@
     /* Featured row (big cards like NebulaPlay) */
     .games-featured-row {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-      gap: 10px; margin-bottom: 28px;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 14px; margin-bottom: 28px;
     }
     .game-card-big {
-      border-radius: 14px; overflow: hidden; cursor: pointer;
-      border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden; cursor: pointer;
+      background: var(--surface); border: 1px solid var(--border);
       transition: transform 0.2s, box-shadow 0.2s;
       position: relative;
-      display: flex; flex-direction: column;
     }
     .game-card-big:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 32px rgba(0,0,0,0.45); }
     .game-card-big:active { transform: translateY(-1px) scale(1.01); }
     .game-card-big-thumb {
-      width: 100%; aspect-ratio: 1/1; object-fit: cover;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .game-card-big-footer {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 6px 8px;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
+      width: 100%; aspect-ratio: 16/10; object-fit: cover;
+      display: block; background: var(--surface-2);
+      font-size: 48px; display: flex; align-items: center; justify-content: center;
     }
     .game-card-big-name {
-      font-family: var(--font-display);
-      font-size: 11px; font-weight: 700; color: var(--text);
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-      flex: 1; min-width: 0;
+      padding: 8px 10px; font-family: var(--font-display);
+      font-size: 13px; font-weight: 700; color: var(--text);
     }
     .game-card-big-tag {
-      background: rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.12);
-      color: var(--accent); font-size: 8px; font-weight: 700;
-      padding: 2px 5px; border-radius: 4px; letter-spacing: 0.06em;
-      flex-shrink: 0; margin-left: 4px;
-      border: 1px solid rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.2);
-      text-transform: uppercase;
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+      color: #fff; font-size: 10px; font-weight: 700;
+      padding: 2px 7px; border-radius: 6px; letter-spacing: 0.06em;
     }
 
     /* All games grid (small tiles) */
     .games-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 12px;
     }
     .game-tile {
-      display: flex; flex-direction: column; align-items: center; gap: 0;
-      cursor: pointer; border-radius: 12px;
-      border: 1px solid var(--border);
-      transition: transform 0.18s, box-shadow 0.18s;
+      display: flex; flex-direction: column; align-items: center; gap: 7px;
+      cursor: pointer; padding: 10px 6px 8px; border-radius: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      transition: transform 0.18s, background 0.18s, box-shadow 0.18s;
       position: relative; overflow: hidden;
     }
     .game-tile::before {
@@ -1009,37 +982,37 @@
       background: linear-gradient(135deg, rgba(var(--accent-r),var(--accent-g),var(--accent-b),0.1), transparent);
       opacity: 0; transition: opacity 0.18s;
     }
-    .game-tile:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+    .game-tile:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); background: var(--surface-2); }
     .game-tile:hover::before { opacity: 1; }
     .game-tile:active { transform: translateY(-1px); }
     .game-thumb-wrap {
-      width: 100%; aspect-ratio: 1/1; overflow: hidden;
-      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-      font-size: 30px; border-radius: 11px 11px 0 0;
+      width: 70px; height: 70px; border-radius: 12px; overflow: hidden;
+      background: var(--surface-2); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px;
     }
     .game-thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .game-img {
-      width: 100%; aspect-ratio: 1/1; border-radius: 11px 11px 0 0;
+      width: 70px; height: 70px; border-radius: 12px;
       object-fit: cover; flex-shrink: 0;
+      background: var(--surface-2);
       display: flex; align-items: center; justify-content: center;
       font-size: 30px;
     }
     .game-name {
-      font-family: var(--font-display); font-size: 10px; font-weight: 700;
-      color: var(--text); text-align: center;
+      font-family: var(--font-display); font-size: 11px; font-weight: 700;
+      color: var(--text-2); text-align: center;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      width: 100%; padding: 5px 4px 6px;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
+      width: 100%; max-width: 88px; padding: 0 2px;
     }
     .games-empty {
       grid-column: 1/-1; text-align: center; color: var(--text-3);
       font-family: var(--font-mono); font-size: 13px; padding: 40px 0;
     }
     @media (max-width: 600px) {
-      .games-featured-row { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
-      .games-grid { grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 6px; }
-      .games-title-text { font-size: 48px; letter-spacing: -3px; }
+      .games-featured-row { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+      .games-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; }
+      .game-thumb-wrap, .game-img { width: 54px; height: 54px; font-size: 24px; }
     }
   </style>
 </head>
@@ -1260,10 +1233,6 @@
 
 <!-- ══ GAMES ══════════════════════════════════════════════════ -->
 <div class="games-screen hidden" id="gamesScreen">
-  <div class="games-title-block">
-    <div class="games-title-text">Cyclone X <span>Games</span></div>
-    <div class="games-title-sub">UNBLOCKED · PLAY ANYWHERE</div>
-  </div>
   <div class="games-search-wrap">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-3);flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     <input id="gamesSearchInput" type="text" placeholder="Search Games..." oninput="filterGames(this.value)" />
@@ -1272,8 +1241,11 @@
     <div class="games-cat-pill active" onclick="setCat('all',this)">All</div>
     <div class="games-cat-pill" onclick="setCat('action',this)">Action</div>
     <div class="games-cat-pill" onclick="setCat('arcade',this)">Arcade</div>
+    <div class="games-cat-pill" onclick="setCat('puzzle',this)">Puzzle</div>
+    <div class="games-cat-pill" onclick="setCat('racing',this)">Racing</div>
     <div class="games-cat-pill" onclick="setCat('sports',this)">Sports</div>
-    <div class="games-cat-pill" onclick="setCat('2player',this)">2 Player</div>
+    <div class="games-cat-pill" onclick="setCat('strategy',this)">Strategy</div>
+    <div class="games-cat-pill" onclick="setCat('builtin',this)">Built-in</div>
   </div>
   <!-- Recently Played Section -->
   <div id="gamesRecentSection" style="display:none;">
@@ -1878,24 +1850,8 @@ const CX_GAMES = [
   { id:83, name:'Pandemic',            cat:'strategy', emoji:'🦠', color:'#dc2626', localPath:'/games/id83/index.html' },
 
   /* ── Built-in offline ── */
-  { id:84, name:'Flappy Bird',         cat:'arcade',   emoji:'🐦', color:'#fde68a', builtin:'gflappy' },
-  { id:85, name:'Dino Run',            cat:'arcade',   emoji:'🦕', color:'#78716c', builtin:'gdino' },
-
-  /* ── 2 Player Games ── */
-  { id:86, name:'Fireboy & Watergirl 2', cat:'2player', emoji:'🔥', color:'#ef4444', localPath:'/games/id33/index.html' },
-  { id:87, name:'Getaway Shootout',    cat:'2player',  emoji:'🏃', color:'#f97316', localPath:'/games/id22/index.html' },
-  { id:88, name:'Rooftop Snipers',     cat:'2player',  emoji:'🎯', color:'#374151', localPath:'/games/id23/index.html' },
-  { id:89, name:'Boxing Random',       cat:'2player',  emoji:'🥊', color:'#ef4444', localPath:'/games/id70/index.html' },
-  { id:90, name:'Soccer Random',       cat:'2player',  emoji:'⚽', color:'#22c55e', localPath:'/games/id69/index.html' },
-  { id:91, name:'Basketball Stars',    cat:'2player',  emoji:'🏀', color:'#f97316', localPath:'/games/id68/index.html' },
-  { id:92, name:'Football Legends',    cat:'2player',  emoji:'🏈', color:'#7c3aed', localPath:'/games/id71/index.html' },
-  { id:93, name:'Bonk.io',             cat:'2player',  emoji:'🏀', color:'#f97316', localPath:'/games/id11/index.html' },
-  { id:94, name:'Pong 2P',             cat:'2player',  emoji:'🏓', color:'#00bcd4', builtin:'gpong' },
-  { id:95, name:'Stickman Soccer',     cat:'2player',  emoji:'⚽', color:'#16a34a', localPath:'/games/id75/index.html' },
-
-  /* ── Space Waves ── */
-  { id:96, name:'Space Waves',         cat:'arcade',   emoji:'🌊', color:'#0ea5e9', builtin:'gspacewaves' },
-  { id:97, name:'Tunnel Rush',         cat:'arcade',   emoji:'🌀', color:'#a855f7', localPath:'/games/id34/index.html' },
+  { id:84, name:'Flappy Bird',         cat:'builtin',  emoji:'🐦', color:'#fde68a', builtin:'gflappy' },
+  { id:85, name:'Dino Run',            cat:'builtin',  emoji:'🦕', color:'#78716c', builtin:'gdino' }
 ];
 
 let _gamesBuilt = false;
@@ -1962,9 +1918,11 @@ function _gameSlug(name) {
 function _gameThumbHTML(g, big) {
   const slug = _gameSlug(g.name);
   const iconSrc = '/icons/' + slug + '.svg';
-  return `<div style="width:100%;aspect-ratio:1/1;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:${big?'52':'30'}px;background:transparent;position:relative;">
-    <img src="${iconSrc}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-    <span style="display:none;font-size:${big?'48':'30'}px;position:absolute;width:100%;height:100%;align-items:center;justify-content:center;background:${g.color}22;">${g.emoji}</span>
+  const size = big ? 'width:100%;aspect-ratio:16/10;' : 'width:100%;height:100%;';
+  // Try SVG icon first, fallback to remote img, fallback to emoji
+  return `<div style="${size}background:${g.color};display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;">
+    <img src="${iconSrc}" style="width:56px;height:56px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+    <span style="display:none;font-size:${big?'52':'28'}px;">${g.emoji}</span>
   </div>`;
 }
 
@@ -1975,37 +1933,19 @@ function _buildFeaturedCard(g) {
   const catLabel = g.cat.charAt(0).toUpperCase() + g.cat.slice(1);
   card.innerHTML = `
     ${_gameThumbHTML(g, true)}
-    <div class="game-card-big-footer">
-      <div class="game-card-big-name">${g.name}</div>
-      <div class="game-card-big-tag">${catLabel}</div>
-    </div>`;
+    <div class="game-card-big-name">${g.name}</div>
+    <div class="game-card-big-tag">${catLabel}</div>`;
   return card;
 }
 
-/* ── Top 20 rotates every 5 minutes ── */
-const TOP20_POOL = [
+/* ── Top 20 most popular games (fixed ordered list) ── */
+const TOP20_NAMES = [
   'Subway Surfers','Slope','1v1.LOL','Run 3','Krunker','Drift Hunters',
   'Shell Shockers','Agar.io','Slither.io','Smash Karts',
   'Moomoo.io','Bonk.io','Cookie Clicker','Geometry Dash Lite',
   'Crossy Road','Minecraft Classic','Friday Night Funkin','Moto X3M',
-  'Happy Wheels','Venge.io','Space Waves','Fireboy & Watergirl',
-  'Getaway Shootout','Rooftop Snipers','Boxing Random','Basketball Stars',
-  'Football Legends','Paper.io 2','Ev.io','Narrow.one',
-  'Soccer Random','Wormate.io','Buildnow.gg','Diep.io'
+  'Happy Wheels','Venge.io'
 ];
-
-function getTop20() {
-  // Use time-based seed so it rotates every 5 minutes
-  const seed = Math.floor(Date.now() / (5 * 60 * 1000));
-  let s = seed;
-  const shuffled = [...TOP20_POOL];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    s = (s * 1664525 + 1013904223) & 0xffffffff;
-    const j = (s >>> 0) % (i + 1);
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled.slice(0, 20).map(n => CX_GAMES.find(g => g.name === n)).filter(Boolean);
-}
 
 function setCat(cat, el) {
   _currentCat = cat;
@@ -2034,14 +1974,12 @@ function openGames() {
 function _buildFeatured() {
   const row = document.getElementById('gamesFeaturedRow');
   if (!row) return;
-  const top20 = getTop20();
+  const top20 = TOP20_NAMES.map(n => CX_GAMES.find(g => g.name === n)).filter(Boolean);
   row.innerHTML = '';
   top20.forEach(g => row.appendChild(_buildFeaturedCard(g)));
   /* Apply featured visibility pref */
   const sec = document.getElementById('gamesFeaturedSection');
   if (sec) sec.style.display = _getGamePref('featured', true) ? '' : 'none';
-  /* Auto-refresh top 20 every 5 minutes */
-  setTimeout(() => { if (_gamesBuilt) _buildFeatured(); }, 5 * 60 * 1000);
 }
 
 function _renderGamesGrid() {
@@ -2973,154 +2911,6 @@ function render(){
   });
 }
 init();
-<\/script></body></html>`,
-
-/* ─── Space Waves ─────────────────────────────────────────────── */
-gspacewaves: `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
-*{margin:0;padding:0}body{background:#000010;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:Arial,sans-serif}
-canvas{display:block}
-.ui{position:fixed;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:20px;pointer-events:none;z-index:10}
-.ui-box{background:rgba(0,20,60,.7);border:1px solid rgba(0,150,255,.3);border-radius:8px;padding:6px 16px;text-align:center}
-.ui-box b{display:block;font-size:22px;color:#00d4ff;font-family:Arial,sans-serif}
-.ui-box span{font-size:10px;color:#4488aa;letter-spacing:1px;text-transform:uppercase}
-#msg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:22px;font-weight:700;text-align:center;pointer-events:none;z-index:20;text-shadow:0 0 20px #00d4ff}
-</style></head><body>
-<div class="ui"><div class="ui-box"><span>Score</span><b id="sc">0</b></div><div class="ui-box"><span>Lives</span><b id="lv">3</b></div><div class="ui-box"><span>Wave</span><b id="wv">1</b></div></div>
-<div id="msg">Click or Space to Start<br><small style="font-size:14px;color:#aaa">Arrow Keys / WASD to move</small></div>
-<canvas id="c"></canvas>
-<script>
-const cv=document.getElementById('c'),ctx=cv.getContext('2d');
-cv.width=Math.min(window.innerWidth,600);cv.height=Math.min(window.innerHeight,500);
-const W=cv.width,H=cv.height;
-let ship,bullets,enemies,particles,score,lives,wave,keys={},state='idle',spawnTimer=0,enemyBullets=[];
-function init(){
-  ship={x:W/2,y:H-70,vx:0,vy:0,r:14,inv:0,shooting:0};
-  bullets=[];enemies=[];particles=[];enemyBullets=[];
-  score=0;lives=3;wave=1;state='play';spawnTimer=0;
-  spawnWave();update(['sc','lv','wv'],[score,lives,wave]);
-  document.getElementById('msg').textContent='';
-}
-function spawnWave(){
-  const count=5+wave*2;
-  for(let i=0;i<count;i++){
-    const x=Math.random()*W*.8+W*.1;
-    const y=Math.random()*H*.3+30;
-    const type=wave>2&&Math.random()<.3?'big':'basic';
-    enemies.push({x,y,vx:(Math.random()-.5)*1.5,vy:.3+Math.random()*.4,r:type==='big'?18:12,hp:type==='big'?3:1,type,fireCD:60+Math.floor(Math.random()*120)});
-  }
-}
-function update(ids,vals){ids.forEach((id,i)=>document.getElementById(id).textContent=vals[i])}
-function addParticle(x,y,col){for(let i=0;i<8;i++)particles.push({x,y,vx:(Math.random()-.5)*4,vy:(Math.random()-.5)*4,life:30,col})}
-function shoot(){bullets.push({x:ship.x,y:ship.y-ship.r,vy:-9,r:4})}
-let lastT=0,shootHeld=false;
-function frame(t){
-  const dt=Math.min((t-lastT)/16.7,3);lastT=t;
-  if(state!=='play'){draw();requestAnimationFrame(frame);return}
-  // ship movement
-  const speed=3.5;
-  if(keys.ArrowLeft||keys.a||keys.A)ship.vx-=speed*.15;
-  if(keys.ArrowRight||keys.d||keys.D)ship.vx+=speed*.15;
-  if(keys.ArrowUp||keys.w||keys.W)ship.vy-=speed*.12;
-  if(keys.ArrowDown||keys.s||keys.S)ship.vy+=speed*.12;
-  ship.vx*=.88;ship.vy*=.88;
-  ship.x=Math.max(ship.r,Math.min(W-ship.r,ship.x+ship.vx));
-  ship.y=Math.max(ship.r,Math.min(H-ship.r,ship.y+ship.vy));
-  if(ship.inv>0)ship.inv--;
-  // auto-shoot
-  ship.shooting--;
-  if((keys[' ']||keys.z||keys.Z||shootHeld)&&ship.shooting<=0){shoot();ship.shooting=8}
-  // bullets
-  bullets=bullets.filter(b=>{b.y+=b.vy;return b.y>-10});
-  // enemy bullets
-  enemyBullets=enemyBullets.filter(b=>{b.x+=b.vx;b.y+=b.vy;return b.y<H+10&&b.x>-10&&b.x<W+10});
-  // enemies
-  enemies.forEach(e=>{
-    e.x+=e.vx;e.y+=e.vy;
-    if(e.x<e.r||e.x>W-e.r)e.vx*=-1;
-    if(e.y>H+30){e.y=-30;e.x=Math.random()*W}
-    e.fireCD--;
-    if(e.fireCD<=0){
-      const ang=Math.atan2(ship.y-e.y,ship.x-e.x);
-      enemyBullets.push({x:e.x,y:e.y,vx:Math.cos(ang)*2.5,vy:Math.sin(ang)*2.5,r:4});
-      e.fireCD=80+Math.floor(Math.random()*80);
-    }
-  });
-  // hit detection: bullets vs enemies
-  for(let i=bullets.length-1;i>=0;i--){
-    for(let j=enemies.length-1;j>=0;j--){
-      if(Math.hypot(bullets[i].x-enemies[j].x,bullets[i].y-enemies[j].y)<bullets[i].r+enemies[j].r){
-        enemies[j].hp--;
-        bullets.splice(i,1);
-        if(enemies[j].hp<=0){
-          addParticle(enemies[j].x,enemies[j].y,'#00d4ff');
-          score+=enemies[j].type==='big'?30:10;
-          enemies.splice(j,1);
-        }
-        break;
-      }
-    }
-  }
-  // enemy bullets vs ship
-  if(ship.inv===0){
-    for(let i=enemyBullets.length-1;i>=0;i--){
-      if(Math.hypot(enemyBullets[i].x-ship.x,enemyBullets[i].y-ship.y)<enemyBullets[i].r+ship.r-4){
-        enemyBullets.splice(i,1);
-        lives--;ship.inv=90;
-        addParticle(ship.x,ship.y,'#ff4444');
-        if(lives<=0){state='dead';document.getElementById('msg').innerHTML='Game Over<br><small style="font-size:14px;color:#aaa">Score: '+score+' — Click to restart</small>'}
-        break;
-      }
-    }
-  }
-  // particles
-  particles=particles.filter(p=>{p.x+=p.vx;p.y+=p.vy;p.life--;return p.life>0});
-  // wave complete
-  if(!enemies.length){wave++;spawnWave();update(['wv'],[wave])}
-  update(['sc','lv'],[score,lives]);
-  draw();requestAnimationFrame(frame);
-}
-function draw(){
-  ctx.fillStyle='#000010';ctx.fillRect(0,0,W,H);
-  // stars
-  ctx.fillStyle='rgba(255,255,255,.6)';
-  for(let i=0;i<60;i++){const x=(i*137+score*.2)%W,y=(i*93+score*.1)%H;ctx.fillRect(x,y,1,1)}
-  // particles
-  particles.forEach(p=>{ctx.globalAlpha=p.life/30;ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill()});
-  ctx.globalAlpha=1;
-  // enemy bullets
-  enemyBullets.forEach(b=>{ctx.fillStyle='#ff6644';ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill()});
-  // enemies
-  enemies.forEach(e=>{
-    ctx.fillStyle=e.type==='big'?'#ff4488':'#8844ff';
-    ctx.beginPath();ctx.arc(e.x,e.y,e.r,0,Math.PI*2);ctx.fill();
-    ctx.strokeStyle='rgba(255,255,255,.3)';ctx.lineWidth=1;ctx.stroke();
-    if(e.type==='big'){ctx.fillStyle='rgba(255,255,255,.5)';ctx.font='10px Arial';ctx.textAlign='center';ctx.fillText('❤'.repeat(e.hp),e.x,e.y+4)}
-  });
-  // player bullets
-  bullets.forEach(b=>{
-    const g=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r*2);
-    g.addColorStop(0,'#00ffff');g.addColorStop(1,'rgba(0,180,255,0)');
-    ctx.fillStyle=g;ctx.beginPath();ctx.arc(b.x,b.y,b.r*2,0,Math.PI*2);ctx.fill();
-  });
-  // ship
-  if(ship.inv===0||Math.floor(ship.inv/6)%2===0){
-    ctx.save();ctx.translate(ship.x,ship.y);
-    ctx.fillStyle='#00d4ff';ctx.beginPath();ctx.moveTo(0,-ship.r);ctx.lineTo(-ship.r*.7,ship.r*.8);ctx.lineTo(0,ship.r*.4);ctx.lineTo(ship.r*.7,ship.r*.8);ctx.closePath();ctx.fill();
-    ctx.fillStyle='rgba(0,212,255,.4)';ctx.beginPath();ctx.arc(0,0,ship.r*1.5,0,Math.PI*2);ctx.fill();
-    // engine flame
-    if((Date.now()/80|0)%2===0){ctx.fillStyle='#ff8800';ctx.beginPath();ctx.moveTo(-6,ship.r*.4);ctx.lineTo(6,ship.r*.4);ctx.lineTo(0,ship.r*1.6);ctx.closePath();ctx.fill()}
-    ctx.restore();
-  }
-}
-document.addEventListener('keydown',e=>{keys[e.key]=true;if(e.key===' '){e.preventDefault();if(state==='idle'||state==='dead')init()}});
-document.addEventListener('keyup',e=>keys[e.key]=false);
-cv.addEventListener('mousedown',()=>{shootHeld=true;if(state!=='play')init()});
-cv.addEventListener('mouseup',()=>shootHeld=false);
-cv.addEventListener('mousemove',e=>{if(state==='play'){const r=cv.getBoundingClientRect();ship.x=e.clientX-r.left;ship.y=e.clientY-r.top}});
-cv.addEventListener('touchstart',e=>{e.preventDefault();if(state!=='play'){init();return}shootHeld=true;const r=cv.getBoundingClientRect();ship.x=e.touches[0].clientX-r.left;ship.y=e.touches[0].clientY-r.top},{passive:false});
-cv.addEventListener('touchmove',e=>{e.preventDefault();if(state==='play'){const r=cv.getBoundingClientRect();ship.x=e.touches[0].clientX-r.left;ship.y=e.touches[0].clientY-r.top}},{passive:false});
-cv.addEventListener('touchend',()=>shootHeld=false);
-requestAnimationFrame(frame);
 <\/script></body></html>`,
   };
   return games[id] || '<html><body style="background:#111;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;font-family:Arial,sans-serif;font-size:20px;">Game not found</body></html>';
