@@ -21,7 +21,7 @@ module.exports = async function handler(req, res) {
           Authorization: "Bearer " + GROQ_KEY,
         },
         body: JSON.stringify({
-          model: "llama3-70b-8192",
+          model: "llama-3.3-70b-versatile",
           max_tokens: 512,
           messages: [
             { role: "system", content: "You are Cyclone X AI. Give concise helpful answers. Use simple HTML like <b>, <br>, <ul><li> when useful. No markdown." },

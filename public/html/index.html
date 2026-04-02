@@ -985,8 +985,8 @@
       border-top: 1px solid rgba(255,255,255,0.07);
     }
     .game-card-big-name {
-      font-family: var(--font-display);
-      font-size: 12px; font-weight: 800; color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      font-size: 12px; font-weight: 600; color: var(--text);
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
       flex: 1; min-width: 0;
     }
@@ -1975,9 +1975,9 @@ function _gameSlug(name) {
 
 /* ── Real game thumbnails ─────────────────────────────────── */
 const GAME_THUMBS = {
-  "Subway Surfers":      "https://www.crazygames.com/game/subway-surfers",
-  "Slope":               "https://cdn2.scratch.mit.edu/get_image/project/567434249_480x360.png",
-  "1v1.LOL":             "https://cdn.imgbin.com/23/1/imgbin-1v1-lol-game-png-nDqhm0U3XT8xS0bfHjqJJpLjA.jpg",
+  "Subway Surfers":      "https://images.crazygames.com/subway-surfers_16x9/auto/auto/subway-surfers_16x9-cover.jpg",
+  "Slope":               "https://images.crazygames.com/slope_16x9/auto/auto/slope_16x9-cover.jpg",
+  "1v1.LOL":             "https://images.crazygames.com/1v1-lol_16x9/auto/auto/1v1-lol_16x9-cover.jpg",
   "Run 3":               "https://images.crazygames.com/run-3_16x9/auto/auto/run-3_16x9-cover.jpg",
   "Drift Hunters":       "https://images.crazygames.com/drift-hunters_16x9/auto/auto/drift-hunters_16x9-cover.jpg",
   "Krunker":             "https://images.crazygames.com/krunker-io_16x9/auto/auto/krunker-io_16x9-cover.jpg",
@@ -1988,7 +1988,10 @@ const GAME_THUMBS = {
   "Bonk.io":             "https://images.crazygames.com/bonk-io_16x9/auto/auto/bonk-io_16x9-cover.jpg",
   "Diep.io":             "https://images.crazygames.com/diepio_16x9/auto/auto/diepio_16x9-cover.jpg",
   "Zombs Royale":        "https://images.crazygames.com/zombsroyale-io_16x9/auto/auto/zombsroyale-io_16x9-cover.jpg",
+  "Surviv.io":           "https://images.crazygames.com/surviv-io_16x9/auto/auto/surviv-io_16x9-cover.jpg",
   "Moomoo.io":           "https://images.crazygames.com/moomoo-io_16x9/auto/auto/moomoo-io_16x9-cover.jpg",
+  "Wings.io":            "https://images.crazygames.com/wings-io_16x9/auto/auto/wings-io_16x9-cover.jpg",
+  "Wormate.io":          "https://images.crazygames.com/wormate-io_16x9/auto/auto/wormate-io_16x9-cover.jpg",
   "Narrow.one":          "https://images.crazygames.com/narrow-one_16x9/auto/auto/narrow-one_16x9-cover.jpg",
   "Ev.io":               "https://images.crazygames.com/ev-io_16x9/auto/auto/ev-io_16x9-cover.jpg",
   "Buildnow.gg":         "https://images.crazygames.com/buildnow-gg_16x9/auto/auto/buildnow-gg_16x9-cover.jpg",
@@ -2010,6 +2013,7 @@ const GAME_THUMBS = {
   "Temple Run 2":        "https://images.crazygames.com/temple-run-2_16x9/auto/auto/temple-run-2_16x9-cover.jpg",
   "Jetpack Joyride":     "https://images.crazygames.com/jetpack-joyride_16x9/auto/auto/jetpack-joyride_16x9-cover.jpg",
   "Hole.io":             "https://images.crazygames.com/hole-io_16x9/auto/auto/hole-io_16x9-cover.jpg",
+  "Space is Key":        "https://images.crazygames.com/space-is-key_16x9/auto/auto/space-is-key_16x9-cover.jpg",
   "Happy Wheels":        "https://images.crazygames.com/happy-wheels_16x9/auto/auto/happy-wheels_16x9-cover.jpg",
   "Smash Karts":         "https://images.crazygames.com/smash-karts_16x9/auto/auto/smash-karts_16x9-cover.jpg",
   "Moto X3M Pool Party": "https://images.crazygames.com/moto-x3m-pool-party_16x9/auto/auto/moto-x3m-pool-party_16x9-cover.jpg",
@@ -2030,6 +2034,34 @@ const GAME_THUMBS = {
   "Minesweeper":         "https://images.crazygames.com/minesweeper_16x9/auto/auto/minesweeper_16x9-cover.jpg",
   "Cut the Rope":        "https://images.crazygames.com/cut-the-rope_16x9/auto/auto/cut-the-rope_16x9-cover.jpg",
   "Stickman Soccer":     "https://images.crazygames.com/stickman-soccer_16x9/auto/auto/stickman-soccer_16x9-cover.jpg",
+  "Road Fury":           "https://images.crazygames.com/road-fury_16x9/auto/auto/road-fury_16x9-cover.jpg",
+  "Burnout Drift":       "https://images.crazygames.com/burnout-drift_16x9/auto/auto/burnout-drift_16x9-cover.jpg",
+  "Penalty Shooters":    "https://images.crazygames.com/penalty-shooters-2_16x9/auto/auto/penalty-shooters-2_16x9-cover.jpg",
+  "Bloxorz":             "https://images.crazygames.com/bloxorz_16x9/auto/auto/bloxorz_16x9-cover.jpg",
+  "Mahjong":             "https://images.crazygames.com/mahjong_16x9/auto/auto/mahjong_16x9-cover.jpg",
+  "Sudoku":              "https://images.crazygames.com/sudoku_16x9/auto/auto/sudoku_16x9-cover.jpg",
+  "Checkers":            "https://images.crazygames.com/checkers_16x9/auto/auto/checkers_16x9-cover.jpg",
+  "Backgammon":          "https://images.crazygames.com/backgammon_16x9/auto/auto/backgammon_16x9-cover.jpg",
+  "Solitaire":           "https://images.crazygames.com/solitaire_16x9/auto/auto/solitaire_16x9-cover.jpg",
+  "Dino Run":            "https://images.crazygames.com/dino-run_16x9/auto/auto/dino-run_16x9-cover.jpg",
+  "Pong":                "https://images.crazygames.com/pong_16x9/auto/auto/pong_16x9-cover.jpg",
+  "Asteroids":           "https://images.crazygames.com/asteroids_16x9/auto/auto/asteroids_16x9-cover.jpg",
+  "Battleship":          "https://images.crazygames.com/battleship_16x9/auto/auto/battleship_16x9-cover.jpg",
+  "Memory Match":        "https://images.crazygames.com/memory-match_16x9/auto/auto/memory-match_16x9-cover.jpg",
+  "Simon Says":          "https://images.crazygames.com/simon-says_16x9/auto/auto/simon-says_16x9-cover.jpg",
+  "Breakout":            "https://images.crazygames.com/breakout_16x9/auto/auto/breakout_16x9-cover.jpg",
+  "Gold Miner":          "https://images.crazygames.com/gold-miner_16x9/auto/auto/gold-miner_16x9-cover.jpg",
+  "Bob the Robber":      "https://images.crazygames.com/bob-the-robber_16x9/auto/auto/bob-the-robber_16x9-cover.jpg",
+  "Snail Bob":           "https://images.crazygames.com/snail-bob_16x9/auto/auto/snail-bob_16x9-cover.jpg",
+  "Highway Racer 3D":    "https://images.crazygames.com/highway-racer-3d_16x9/auto/auto/highway-racer-3d_16x9-cover.jpg",
+  "Traffic Jam 3D":      "https://images.crazygames.com/traffic-jam-3d_16x9/auto/auto/traffic-jam-3d_16x9-cover.jpg",
+  "Racing Limits":       "https://images.crazygames.com/racing-limits_16x9/auto/auto/racing-limits_16x9-cover.jpg",
+  "Crazy Cars":          "https://images.crazygames.com/crazy-cars_16x9/auto/auto/crazy-cars_16x9-cover.jpg",
+  "Pandemic":            "https://images.crazygames.com/pandemic_16x9/auto/auto/pandemic_16x9-cover.jpg",
+  "Space Waves":         "https://images.crazygames.com/space-waves_16x9/auto/auto/space-waves_16x9-cover.jpg",
+  "Cubes 2048":          "https://images.crazygames.com/cubes-2048_16x9/auto/auto/cubes-2048_16x9-cover.jpg",
+  "Wormate.io":          "https://images.crazygames.com/wormate-io_16x9/auto/auto/wormate-io_16x9-cover.jpg",
+  "Smash Karts":         "https://images.crazygames.com/smash-karts_16x9/auto/auto/smash-karts_16x9-cover.jpg",
 };
 function _gameThumbHTML(g, big) {
   const slug = _gameSlug(g.name);
