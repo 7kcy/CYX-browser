@@ -1972,96 +1972,99 @@ function _gameSlug(name) {
 }
 
 
-/* ── Real game thumbnails ─────────────────────────────────── */
+/* ── Real game thumbnails — confirmed Poki CDN hashes + CrazyGames no-referrer ── */
+const P = 'https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=600,height=800,fit=cover,f=auto/';
+const CG = 'https://images.crazygames.com/';
 const GAME_THUMBS = {
-  "Subway Surfers":        "https://imgs.crazygames.com/subway-surfers/auto/auto/subway-surfers-cover.jpg",
-  "Slope":                 "https://imgs.crazygames.com/slope/auto/auto/slope-cover.jpg",
-  "1v1.LOL":               "https://imgs.crazygames.com/1v1-lol/auto/auto/1v1-lol-cover.jpg",
-  "Run 3":                 "https://imgs.crazygames.com/run-3/auto/auto/run-3-cover.jpg",
-  "Drift Hunters":         "https://imgs.crazygames.com/drift-hunters/auto/auto/drift-hunters-cover.jpg",
-  "Krunker":               "https://imgs.crazygames.com/krunker-io/auto/auto/krunker-io-cover.jpg",
-  "Shell Shockers":        "https://imgs.crazygames.com/shell-shockers/auto/auto/shell-shockers-cover.jpg",
-  "Paper.io 2":            "https://imgs.crazygames.com/paperio-2/auto/auto/paperio-2-cover.jpg",
-  "Agar.io":               "https://imgs.crazygames.com/agario/auto/auto/agario-cover.jpg",
-  "Slither.io":            "https://imgs.crazygames.com/slither-io/auto/auto/slither-io-cover.jpg",
-  "Bonk.io":               "https://imgs.crazygames.com/bonk-io/auto/auto/bonk-io-cover.jpg",
-  "Diep.io":               "https://imgs.crazygames.com/diepio/auto/auto/diepio-cover.jpg",
-  "Zombs Royale":          "https://imgs.crazygames.com/zombsroyale-io/auto/auto/zombsroyale-io-cover.jpg",
-  "Surviv.io":             "https://imgs.crazygames.com/surviv-io/auto/auto/surviv-io-cover.jpg",
-  "Moomoo.io":             "https://imgs.crazygames.com/moomoo-io/auto/auto/moomoo-io-cover.jpg",
-  "Wings.io":              "https://imgs.crazygames.com/wings-io/auto/auto/wings-io-cover.jpg",
-  "Wormate.io":            "https://imgs.crazygames.com/wormate-io/auto/auto/wormate-io-cover.jpg",
-  "Narrow.one":            "https://imgs.crazygames.com/narrow-one/auto/auto/narrow-one-cover.jpg",
-  "Ev.io":                 "https://imgs.crazygames.com/ev-io/auto/auto/ev-io-cover.jpg",
-  "Buildnow.gg":           "https://imgs.crazygames.com/buildnow-gg/auto/auto/buildnow-gg-cover.jpg",
-  "Venge.io":              "https://imgs.crazygames.com/venge-io/auto/auto/venge-io-cover.jpg",
-  "Getaway Shootout":      "https://imgs.crazygames.com/getaway-shootout/auto/auto/getaway-shootout-cover.jpg",
-  "Rooftop Snipers":       "https://imgs.crazygames.com/rooftop-snipers/auto/auto/rooftop-snipers-cover.jpg",
-  "Minecraft Classic":     "https://imgs.crazygames.com/minecraft-classic/auto/auto/minecraft-classic-cover.jpg",
-  "Cookie Clicker":        "https://imgs.crazygames.com/cookie-clicker/auto/auto/cookie-clicker-cover.jpg",
-  "Geometry Dash Lite":    "https://imgs.crazygames.com/geometry-dash/auto/auto/geometry-dash-cover.jpg",
-  "Friday Night Funkin":   "https://imgs.crazygames.com/friday-night-funkin/auto/auto/friday-night-funkin-cover.jpg",
-  "Crossy Road":           "https://imgs.crazygames.com/crossy-road-online/auto/auto/crossy-road-online-cover.jpg",
-  "Vex 7":                 "https://imgs.crazygames.com/vex-7/auto/auto/vex-7-cover.jpg",
-  "Drift Boss":            "https://imgs.crazygames.com/drift-boss/auto/auto/drift-boss-cover.jpg",
-  "Stickman Hook":         "https://imgs.crazygames.com/stickman-hook/auto/auto/stickman-hook-cover.jpg",
-  "Moto X3M":              "https://imgs.crazygames.com/moto-x3m/auto/auto/moto-x3m-cover.jpg",
-  "Fireboy & Watergirl":   "https://imgs.crazygames.com/fireboy-and-watergirl-1-forest-temple/auto/auto/fireboy-and-watergirl-1-forest-temple-cover.jpg",
-  "Fireboy & Watergirl 2": "https://imgs.crazygames.com/fireboy-and-watergirl-2-light-temple/auto/auto/fireboy-and-watergirl-2-light-temple-cover.jpg",
-  "Tunnel Rush":           "https://imgs.crazygames.com/tunnel-rush/auto/auto/tunnel-rush-cover.jpg",
-  "Red Ball 4":            "https://imgs.crazygames.com/red-ball-4/auto/auto/red-ball-4-cover.jpg",
-  "Temple Run 2":          "https://imgs.crazygames.com/temple-run-2/auto/auto/temple-run-2-cover.jpg",
-  "Jetpack Joyride":       "https://imgs.crazygames.com/jetpack-joyride/auto/auto/jetpack-joyride-cover.jpg",
-  "Hole.io":               "https://imgs.crazygames.com/hole-io/auto/auto/hole-io-cover.jpg",
-  "Space is Key":          "https://imgs.crazygames.com/space-is-key/auto/auto/space-is-key-cover.jpg",
-  "Happy Wheels":          "https://imgs.crazygames.com/happy-wheels/auto/auto/happy-wheels-cover.jpg",
-  "2048":                  "https://imgs.crazygames.com/2048/auto/auto/2048-cover.jpg",
-  "Snake":                 "https://imgs.crazygames.com/snake/auto/auto/snake-cover.jpg",
-  "Tetris":                "https://imgs.crazygames.com/tetris/auto/auto/tetris-cover.jpg",
-  "Wordle":                "https://imgs.crazygames.com/wordle-unlimited/auto/auto/wordle-unlimited-cover.jpg",
-  "Minesweeper":           "https://imgs.crazygames.com/minesweeper/auto/auto/minesweeper-cover.jpg",
-  "Pong":                  "https://imgs.crazygames.com/pong/auto/auto/pong-cover.jpg",
-  "Pong 2P":               "https://imgs.crazygames.com/pong/auto/auto/pong-cover.jpg",
-  "Flappy Bird":           "https://imgs.crazygames.com/flappy-bird/auto/auto/flappy-bird-cover.jpg",
-  "Dino Run":              "https://imgs.crazygames.com/dino-run/auto/auto/dino-run-cover.jpg",
-  "Asteroids":             "https://imgs.crazygames.com/asteroids/auto/auto/asteroids-cover.jpg",
-  "Breakout":              "https://imgs.crazygames.com/breakout/auto/auto/breakout-cover.jpg",
-  "Memory Match":          "https://imgs.crazygames.com/memory-match/auto/auto/memory-match-cover.jpg",
-  "Simon Says":            "https://imgs.crazygames.com/simon-says/auto/auto/simon-says-cover.jpg",
-  "Cut the Rope":          "https://imgs.crazygames.com/cut-the-rope/auto/auto/cut-the-rope-cover.jpg",
-  "Bob The Robber":        "https://imgs.crazygames.com/bob-the-robber/auto/auto/bob-the-robber-cover.jpg",
-  "Mahjong":               "https://imgs.crazygames.com/mahjong/auto/auto/mahjong-cover.jpg",
-  "Sudoku":                "https://imgs.crazygames.com/sudoku/auto/auto/sudoku-cover.jpg",
-  "Solitaire":             "https://imgs.crazygames.com/solitaire/auto/auto/solitaire-cover.jpg",
-  "Bloxorz":               "https://imgs.crazygames.com/bloxorz/auto/auto/bloxorz-cover.jpg",
-  "Snail Bob":             "https://imgs.crazygames.com/snail-bob/auto/auto/snail-bob-cover.jpg",
-  "Gold Miner":            "https://imgs.crazygames.com/gold-miner/auto/auto/gold-miner-cover.jpg",
-  "Cubes 2048":            "https://imgs.crazygames.com/cubes-2048/auto/auto/cubes-2048-cover.jpg",
-  "Smash Karts":           "https://imgs.crazygames.com/smash-karts/auto/auto/smash-karts-cover.jpg",
-  "Moto X3M Pool Party":   "https://imgs.crazygames.com/moto-x3m-pool-party/auto/auto/moto-x3m-pool-party-cover.jpg",
-  "Basketball Stars":      "https://imgs.crazygames.com/basketball-stars/auto/auto/basketball-stars-cover.jpg",
-  "Soccer Random":         "https://imgs.crazygames.com/soccer-random/auto/auto/soccer-random-cover.jpg",
-  "Boxing Random":         "https://imgs.crazygames.com/boxing-random/auto/auto/boxing-random-cover.jpg",
-  "Football Legends":      "https://imgs.crazygames.com/football-legends-2021/auto/auto/football-legends-2021-cover.jpg",
-  "Tennis Legends":        "https://imgs.crazygames.com/tennis-legends-2021/auto/auto/tennis-legends-2021-cover.jpg",
-  "Golf Battle":           "https://imgs.crazygames.com/golf-battle/auto/auto/golf-battle-cover.jpg",
-  "Penalty Shooters":      "https://imgs.crazygames.com/penalty-shooters-2/auto/auto/penalty-shooters-2-cover.jpg",
-  "Stickman Soccer":       "https://imgs.crazygames.com/stickman-soccer/auto/auto/stickman-soccer-cover.jpg",
-  "Bloons TD 5":           "https://imgs.crazygames.com/bloons-tower-defense-5/auto/auto/bloons-tower-defense-5-cover.jpg",
-  "Kingdom Rush":          "https://imgs.crazygames.com/kingdom-rush/auto/auto/kingdom-rush-cover.jpg",
-  "Chess":                 "https://imgs.crazygames.com/chess/auto/auto/chess-cover.jpg",
-  "Checkers":              "https://imgs.crazygames.com/checkers/auto/auto/checkers-cover.jpg",
-  "Backgammon":            "https://imgs.crazygames.com/backgammon/auto/auto/backgammon-cover.jpg",
-  "Battleship":            "https://imgs.crazygames.com/battleship/auto/auto/battleship-cover.jpg",
-  "Pandemic":              "https://imgs.crazygames.com/pandemic/auto/auto/pandemic-cover.jpg",
-  "Space Waves":           "https://imgs.crazygames.com/space-waves/auto/auto/space-waves-cover.jpg",
-  "Tic Tac Toe":           "https://imgs.crazygames.com/tic-tac-toe/auto/auto/tic-tac-toe-cover.jpg",
-  "Highway Racer 3D":      "https://imgs.crazygames.com/highway-racer-3d/auto/auto/highway-racer-3d-cover.jpg",
-  "Traffic Jam 3D":        "https://imgs.crazygames.com/traffic-jam-3d/auto/auto/traffic-jam-3d-cover.jpg",
-  "Racing Limits":         "https://imgs.crazygames.com/racing-limits/auto/auto/racing-limits-cover.jpg",
-  "Crazy Cars":            "https://imgs.crazygames.com/crazy-cars/auto/auto/crazy-cars-cover.jpg",
-  "Road Fury":             "https://imgs.crazygames.com/road-fury/auto/auto/road-fury-cover.jpg",
-  "Burnout Drift":         "https://imgs.crazygames.com/burnout-drift/auto/auto/burnout-drift-cover.jpg",
+  /* Confirmed Poki CDN hashes (no hotlink protection) */
+  "Smash Karts":           P+'9c9e529b14731be871b07b89660bbc2a/smash-karts.png',
+  "Basketball Stars":      P+'bc02c9cdfc5b424ddf343b01edf791ce/basketball-stars.png',
+  "Drift Boss":            P+'baf55f009fd63dd63c760a5dcfe79615/drift-boss.png',
+  "Stickman Hook":         P+'99e090d154caf30f3625df7e456d5984/stickman-hook.png',
+  "Tunnel Rush":           P+'2094926076b7aa8264cace220ce5decc/tunnel-rush.png',
+  "Moto X3M":              P+'2c6d5a46cdbceada277c870ce1c389ee/moto-x3m.jpg',
+  "Temple Run 2":          P+'b5c8b617f65be7cc4d56dd3657590ae7/temple-run-2.png',
+  "Crossy Road":           P+'76fc1b000203faf71b77a75b10022142/crossy-road.png',
+  "Subway Surfers":        P+'9e89c8fe71f2e1179437b6b6d7e3a5a1/subway-surfers.png',
+  /* CrazyGames CDN — works with referrerpolicy=no-referrer */
+  "Slope":                 CG+'slope_16x9/auto/auto/slope_16x9-cover.jpg',
+  "1v1.LOL":               CG+'1v1-lol_16x9/auto/auto/1v1-lol_16x9-cover.jpg',
+  "Run 3":                 CG+'run-3_16x9/auto/auto/run-3_16x9-cover.jpg',
+  "Drift Hunters":         CG+'drift-hunters_16x9/auto/auto/drift-hunters_16x9-cover.jpg',
+  "Krunker":               CG+'krunker-io_16x9/auto/auto/krunker-io_16x9-cover.jpg',
+  "Shell Shockers":        CG+'shell-shockers_16x9/auto/auto/shell-shockers_16x9-cover.jpg',
+  "Paper.io 2":            CG+'paperio-2_16x9/auto/auto/paperio-2_16x9-cover.jpg',
+  "Agar.io":               CG+'agario_16x9/auto/auto/agario_16x9-cover.jpg',
+  "Slither.io":            CG+'slither-io_16x9/auto/auto/slither-io_16x9-cover.jpg',
+  "Bonk.io":               CG+'bonk-io_16x9/auto/auto/bonk-io_16x9-cover.jpg',
+  "Diep.io":               CG+'diepio_16x9/auto/auto/diepio_16x9-cover.jpg',
+  "Zombs Royale":          CG+'zombsroyale-io_16x9/auto/auto/zombsroyale-io_16x9-cover.jpg',
+  "Surviv.io":             CG+'surviv-io_16x9/auto/auto/surviv-io_16x9-cover.jpg',
+  "Moomoo.io":             CG+'moomoo-io_16x9/auto/auto/moomoo-io_16x9-cover.jpg',
+  "Wings.io":              CG+'wings-io_16x9/auto/auto/wings-io_16x9-cover.jpg',
+  "Wormate.io":            CG+'wormate-io_16x9/auto/auto/wormate-io_16x9-cover.jpg',
+  "Narrow.one":            CG+'narrow-one_16x9/auto/auto/narrow-one_16x9-cover.jpg',
+  "Ev.io":                 CG+'ev-io_16x9/auto/auto/ev-io_16x9-cover.jpg',
+  "Buildnow.gg":           CG+'buildnow-gg_16x9/auto/auto/buildnow-gg_16x9-cover.jpg',
+  "Venge.io":              CG+'venge-io_16x9/auto/auto/venge-io_16x9-cover.jpg',
+  "Getaway Shootout":      CG+'getaway-shootout_16x9/auto/auto/getaway-shootout_16x9-cover.jpg',
+  "Rooftop Snipers":       CG+'rooftop-snipers_16x9/auto/auto/rooftop-snipers_16x9-cover.jpg',
+  "Minecraft Classic":     CG+'minecraft-classic_16x9/auto/auto/minecraft-classic_16x9-cover.jpg',
+  "Cookie Clicker":        CG+'cookie-clicker_16x9/auto/auto/cookie-clicker_16x9-cover.jpg',
+  "Geometry Dash Lite":    CG+'geometry-dash_16x9/auto/auto/geometry-dash_16x9-cover.jpg',
+  "Friday Night Funkin":   CG+'friday-night-funkin_16x9/auto/auto/friday-night-funkin_16x9-cover.jpg',
+  "Vex 7":                 CG+'vex-7_16x9/auto/auto/vex-7_16x9-cover.jpg',
+  "Hole.io":               CG+'hole-io_16x9/auto/auto/hole-io_16x9-cover.jpg',
+  "Space is Key":          CG+'space-is-key_16x9/auto/auto/space-is-key_16x9-cover.jpg',
+  "Happy Wheels":          CG+'happy-wheels_16x9/auto/auto/happy-wheels_16x9-cover.jpg',
+  "2048":                  CG+'2048_16x9/auto/auto/2048_16x9-cover.jpg',
+  "Snake":                 CG+'snake_16x9/auto/auto/snake_16x9-cover.jpg',
+  "Tetris":                CG+'tetris_16x9/auto/auto/tetris_16x9-cover.jpg',
+  "Wordle":                CG+'wordle-unlimited_16x9/auto/auto/wordle-unlimited_16x9-cover.jpg',
+  "Minesweeper":           CG+'minesweeper_16x9/auto/auto/minesweeper_16x9-cover.jpg',
+  "Pong":                  CG+'pong_16x9/auto/auto/pong_16x9-cover.jpg',
+  "Pong 2P":               CG+'pong_16x9/auto/auto/pong_16x9-cover.jpg',
+  "Flappy Bird":           CG+'flappy-bird_16x9/auto/auto/flappy-bird_16x9-cover.jpg',
+  "Dino Run":              CG+'dino-run_16x9/auto/auto/dino-run_16x9-cover.jpg',
+  "Asteroids":             CG+'asteroids_16x9/auto/auto/asteroids_16x9-cover.jpg',
+  "Breakout":              CG+'breakout_16x9/auto/auto/breakout_16x9-cover.jpg',
+  "Memory Match":          CG+'memory-match_16x9/auto/auto/memory-match_16x9-cover.jpg',
+  "Simon Says":            CG+'simon-says_16x9/auto/auto/simon-says_16x9-cover.jpg',
+  "Cut the Rope":          CG+'cut-the-rope_16x9/auto/auto/cut-the-rope_16x9-cover.jpg',
+  "Bob The Robber":        CG+'bob-the-robber_16x9/auto/auto/bob-the-robber_16x9-cover.jpg',
+  "Mahjong":               CG+'mahjong_16x9/auto/auto/mahjong_16x9-cover.jpg',
+  "Sudoku":                CG+'sudoku_16x9/auto/auto/sudoku_16x9-cover.jpg',
+  "Solitaire":             CG+'solitaire_16x9/auto/auto/solitaire_16x9-cover.jpg',
+  "Bloxorz":               CG+'bloxorz_16x9/auto/auto/bloxorz_16x9-cover.jpg',
+  "Snail Bob":             CG+'snail-bob_16x9/auto/auto/snail-bob_16x9-cover.jpg',
+  "Gold Miner":            CG+'gold-miner_16x9/auto/auto/gold-miner_16x9-cover.jpg',
+  "Cubes 2048":            CG+'cubes-2048_16x9/auto/auto/cubes-2048_16x9-cover.jpg',
+  "Moto X3M Pool Party":   CG+'moto-x3m-pool-party_16x9/auto/auto/moto-x3m-pool-party_16x9-cover.jpg',
+  "Soccer Random":         CG+'soccer-random_16x9/auto/auto/soccer-random_16x9-cover.jpg',
+  "Boxing Random":         CG+'boxing-random_16x9/auto/auto/boxing-random_16x9-cover.jpg',
+  "Football Legends":      CG+'football-legends-2021_16x9/auto/auto/football-legends-2021_16x9-cover.jpg',
+  "Tennis Legends":        CG+'tennis-legends-2021_16x9/auto/auto/tennis-legends-2021_16x9-cover.jpg',
+  "Golf Battle":           CG+'golf-battle_16x9/auto/auto/golf-battle_16x9-cover.jpg',
+  "Penalty Shooters":      CG+'penalty-shooters-2_16x9/auto/auto/penalty-shooters-2_16x9-cover.jpg',
+  "Stickman Soccer":       CG+'stickman-soccer_16x9/auto/auto/stickman-soccer_16x9-cover.jpg',
+  "Bloons TD 5":           CG+'bloons-tower-defense-5_16x9/auto/auto/bloons-tower-defense-5_16x9-cover.jpg',
+  "Kingdom Rush":          CG+'kingdom-rush_16x9/auto/auto/kingdom-rush_16x9-cover.jpg',
+  "Chess":                 CG+'chess_16x9/auto/auto/chess_16x9-cover.jpg',
+  "Checkers":              CG+'checkers_16x9/auto/auto/checkers_16x9-cover.jpg',
+  "Backgammon":            CG+'backgammon_16x9/auto/auto/backgammon_16x9-cover.jpg',
+  "Battleship":            CG+'battleship_16x9/auto/auto/battleship_16x9-cover.jpg',
+  "Pandemic":              CG+'pandemic_16x9/auto/auto/pandemic_16x9-cover.jpg',
+  "Space Waves":           CG+'space-waves_16x9/auto/auto/space-waves_16x9-cover.jpg',
+  "Tic Tac Toe":           CG+'tic-tac-toe_16x9/auto/auto/tic-tac-toe_16x9-cover.jpg',
+  "Highway Racer 3D":      CG+'highway-racer-3d_16x9/auto/auto/highway-racer-3d_16x9-cover.jpg',
+  "Traffic Jam 3D":        CG+'traffic-jam-3d_16x9/auto/auto/traffic-jam-3d_16x9-cover.jpg',
+  "Racing Limits":         CG+'racing-limits_16x9/auto/auto/racing-limits_16x9-cover.jpg',
+  "Crazy Cars":            CG+'crazy-cars_16x9/auto/auto/crazy-cars_16x9-cover.jpg',
+  "Road Fury":             CG+'road-fury_16x9/auto/auto/road-fury_16x9-cover.jpg',
+  "Burnout Drift":         CG+'burnout-drift_16x9/auto/auto/burnout-drift_16x9-cover.jpg',
+  "Jetpack Joyride":       CG+'jetpack-joyride_16x9/auto/auto/jetpack-joyride_16x9-cover.jpg',
+  "Fireboy & Watergirl":   CG+'fireboy-and-watergirl-1-forest-temple_16x9/auto/auto/fireboy-and-watergirl-1-forest-temple_16x9-cover.jpg',
+  "Fireboy & Watergirl 2": CG+'fireboy-and-watergirl-2-light-temple_16x9/auto/auto/fireboy-and-watergirl-2-light-temple_16x9-cover.jpg',
 };
 /* ── Multi-CDN fallback chain for game covers ── */
 const COVER_CDNS = [
@@ -2203,43 +2206,22 @@ function _svgThumb(g) {
 function _gameThumbHTML(g, big) {
   const slug = _gameSlug(g.name);
   const svgSrc = _svgThumb(g);
-  /* Try CDN images as bonus — if they load they replace the SVG */
-  const slug2 = slug.replace(/-io$/, '');
-  const cdn1 = KNOWN_LOCAL_ICONS[slug] || GAME_THUMBS[g.name] || null;
-  const cdn2 = `https://images.crazygames.com/${slug}_16x9/auto/auto/${slug}_16x9-cover.jpg`;
-  const cdn3 = `https://imgs.crazygames.com/${slug}/auto/auto/${slug}-cover.jpg`;
+  const realUrl = GAME_THUMBS[g.name]
+    || KNOWN_LOCAL_ICONS[slug]
+    || `https://images.crazygames.com/${slug}_16x9/auto/auto/${slug}_16x9-cover.jpg`;
 
-  return `<div style="width:100%;aspect-ratio:3/4;overflow:hidden;background:#0d0d1a;position:relative;flex-shrink:0;">
-    <img src="${svgSrc}"
-      data-cdn1="${cdn1||''}" data-cdn2="${cdn2}" data-cdn3="${cdn3}" data-tried="0"
+  return `<div style="width:100%;aspect-ratio:3/4;overflow:hidden;background:#000;position:relative;flex-shrink:0;">
+    <img src="${realUrl}"
+      referrerpolicy="no-referrer"
+      crossorigin="anonymous"
       style="width:100%;height:100%;object-fit:cover;display:block;"
-      onload="_imgTryCdn(this)"
-      onerror="_imgFallback(this)" />
+      onerror="this.onerror=null;this.src='${svgSrc.replace(/'/g,"\\'")}'" />
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 55%,rgba(0,0,0,.65) 100%);pointer-events:none;"></div>
   </div>`;
 }
 
-function _imgTryCdn(img) {
-  /* After SVG loads, silently try real CDN images in background */
-  if (img.dataset.tried === '0' && !img.src.startsWith('data:')) return;
-  if (img.dataset.tried !== '0') return;
-  img.dataset.tried = '1';
-  const cdns = [img.dataset.cdn1, img.dataset.cdn2, img.dataset.cdn3].filter(Boolean);
-  if (!cdns.length) return;
-  let i = 0;
-  function tryNext() {
-    if (i >= cdns.length) return;
-    const probe = new Image();
-    probe.onload = () => { img.src = cdns[i]; };
-    probe.onerror = () => { i++; tryNext(); };
-    probe.src = cdns[i];
-  }
-  tryNext();
-}
-
-function _imgFallback(img) {
-  /* If even SVG fails (shouldn't), do nothing — SVG is always valid */
-}
+function _imgTryCdn(img) {}
+function _imgFallback(img) {}
 
 function _buildFeaturedCard(g) {
   const card = document.createElement('div');
