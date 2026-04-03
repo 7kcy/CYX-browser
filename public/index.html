@@ -1177,7 +1177,7 @@
 
 <!-- ══ TOPBAR ════════════════════════════════════════════════ -->
 <header class="topbar">
-  <div class="topbar-left">
+  <div class="topbar-left" onclick="goHome()" style="cursor:pointer;" title="Go to Proxy">
     <img src="/CyLogo_png.png" alt="CX" class="topbar-logo" onerror="this.style.display='none'"/>
     <div class="topbar-name">Cyclone<span>X</span></div>
   </div>
@@ -2082,7 +2082,7 @@ function _getBestThumb(g) {
 
 const KNOWN_LOCAL_ICONS = {
   "1v1-lol": "https://images.crazygames.com/1v1-lol_16x9/auto/auto/1v1-lol_16x9-cover.jpg",
-  "2048": "/icons/2048.jpg",
+  "2048": "https://images.crazygames.com/2048_16x9/auto/auto/2048_16x9-cover.jpg",
   "agar-io": "https://images.crazygames.com/agario_16x9/auto/auto/agario_16x9-cover.jpg",
   "asteroids": "https://images.crazygames.com/asteroids_16x9/auto/auto/asteroids_16x9-cover.jpg",
   "backgammon": "https://images.crazygames.com/backgammon_16x9/auto/auto/backgammon_16x9-cover.jpg",
@@ -2102,7 +2102,7 @@ const KNOWN_LOCAL_ICONS = {
   "crazy-cars": "https://images.crazygames.com/crazy-cars_16x9/auto/auto/crazy-cars_16x9-cover.jpg",
   "crossy-road": "https://images.crazygames.com/crossy-road-online_16x9/auto/auto/crossy-road-online_16x9-cover.jpg",
   "cubes-2048": "https://images.crazygames.com/cubes-2048_16x9/auto/auto/cubes-2048_16x9-cover.jpg",
-  "cut-the-rope": "/icons/cut-the-rope.jpg",
+  "cut-the-rope": "https://images.crazygames.com/cut-the-rope_16x9/auto/auto/cut-the-rope_16x9-cover.jpg",
   "diep-io": "https://images.crazygames.com/diepio_16x9/auto/auto/diepio_16x9-cover.jpg",
   "dino-run": "https://images.crazygames.com/dino-run_16x9/auto/auto/dino-run_16x9-cover.jpg",
   "drift-boss": "https://images.crazygames.com/drift-boss_16x9/auto/auto/drift-boss_16x9-cover.jpg",
@@ -2120,16 +2120,16 @@ const KNOWN_LOCAL_ICONS = {
   "happy-wheels": "https://images.crazygames.com/happy-wheels_16x9/auto/auto/happy-wheels_16x9-cover.jpg",
   "highway-racer-3d": "https://images.crazygames.com/highway-racer-3d_16x9/auto/auto/highway-racer-3d_16x9-cover.jpg",
   "hole-io": "https://images.crazygames.com/hole-io_16x9/auto/auto/hole-io_16x9-cover.jpg",
-  "jetpack-joyride": "/icons/jetpack-joyride.jpg",
+  "jetpack-joyride": "https://images.crazygames.com/jetpack-joyride_16x9/auto/auto/jetpack-joyride_16x9-cover.jpg",
   "kingdom-rush": "https://images.crazygames.com/kingdom-rush_16x9/auto/auto/kingdom-rush_16x9-cover.jpg",
   "krunker": "https://images.crazygames.com/krunker-io_16x9/auto/auto/krunker-io_16x9-cover.jpg",
-  "mahjong": "/icons/mahjong.jpg",
+  "mahjong": "https://images.crazygames.com/mahjong_16x9/auto/auto/mahjong_16x9-cover.jpg",
   "memory-match": "https://images.crazygames.com/memory-match_16x9/auto/auto/memory-match_16x9-cover.jpg",
-  "minecraft-classic": "/icons/minecraft-classic.jpg",
+  "minecraft-classic": "https://images.crazygames.com/minecraft-classic_16x9/auto/auto/minecraft-classic_16x9-cover.jpg",
   "minesweeper": "https://images.crazygames.com/minesweeper_16x9/auto/auto/minesweeper_16x9-cover.jpg",
   "moomoo-io": "https://images.crazygames.com/moomoo-io_16x9/auto/auto/moomoo-io_16x9-cover.jpg",
-  "moto-x3m": "/icons/moto-x3m.jpg",
-  "moto-x3m-pool-party": "/icons/moto-x3m-pool-party.jpg",
+  "moto-x3m": "https://images.crazygames.com/moto-x3m_16x9/auto/auto/moto-x3m_16x9-cover.jpg",
+  "moto-x3m-pool-party": "https://images.crazygames.com/moto-x3m-pool-party_16x9/auto/auto/moto-x3m-pool-party_16x9-cover.jpg",
   "narrow-one": "https://images.crazygames.com/narrow-one_16x9/auto/auto/narrow-one_16x9-cover.jpg",
   "pandemic": "https://images.crazygames.com/pandemic_16x9/auto/auto/pandemic_16x9-cover.jpg",
   "paper-io-2": "https://images.crazygames.com/paperio-2_16x9/auto/auto/paperio-2_16x9-cover.jpg",
@@ -2144,18 +2144,18 @@ const KNOWN_LOCAL_ICONS = {
   "shell-shockers": "https://images.crazygames.com/shell-shockers_16x9/auto/auto/shell-shockers_16x9-cover.jpg",
   "simon-says": "https://images.crazygames.com/simon-says_16x9/auto/auto/simon-says_16x9-cover.jpg",
   "slither-io": "https://images.crazygames.com/slither-io_16x9/auto/auto/slither-io_16x9-cover.jpg",
-  "slope": "/icons/slope.jpg",
-  "smash-karts": "/icons/smash-karts.jpg",
+  "slope": "https://images.crazygames.com/slope_16x9/auto/auto/slope_16x9-cover.jpg",
+  "smash-karts": "https://images.crazygames.com/smash-karts_16x9/auto/auto/smash-karts_16x9-cover.jpg",
   "snail-bob": "https://images.crazygames.com/snail-bob_16x9/auto/auto/snail-bob_16x9-cover.jpg",
   "snake": "https://images.crazygames.com/snake_16x9/auto/auto/snake_16x9-cover.jpg",
   "soccer-random": "https://images.crazygames.com/soccer-random_16x9/auto/auto/soccer-random_16x9-cover.jpg",
-  "solitaire": "/icons/solitaire.jpg",
+  "solitaire": "https://images.crazygames.com/solitaire_16x9/auto/auto/solitaire_16x9-cover.jpg",
   "space-is-key": "https://images.crazygames.com/space-is-key_16x9/auto/auto/space-is-key_16x9-cover.jpg",
   "space-waves": "https://images.crazygames.com/space-waves_16x9/auto/auto/space-waves_16x9-cover.jpg",
   "stickman-hook": "https://images.crazygames.com/stickman-hook_16x9/auto/auto/stickman-hook_16x9-cover.jpg",
   "stickman-soccer": "https://images.crazygames.com/stickman-soccer_16x9/auto/auto/stickman-soccer_16x9-cover.jpg",
   "subway-surfers": "https://images.crazygames.com/subway-surfers_16x9/auto/auto/subway-surfers_16x9-cover.jpg",
-  "sudoku": "/icons/sudoku.jpg",
+  "sudoku": "https://images.crazygames.com/sudoku_16x9/auto/auto/sudoku_16x9-cover.jpg",
   "surviv-io": "https://images.crazygames.com/surviv-io_16x9/auto/auto/surviv-io_16x9-cover.jpg",
   "temple-run-2": "https://images.crazygames.com/temple-run-2_16x9/auto/auto/temple-run-2_16x9-cover.jpg",
   "tennis-legends": "https://images.crazygames.com/tennis-legends-2021_16x9/auto/auto/tennis-legends-2021_16x9-cover.jpg",
@@ -2341,7 +2341,7 @@ function openGameOverlay(g) {
   _addRecentGame(g.name);
 
   const overlay = document.getElementById('gameOverlay');
-  document.getElementById('gameOverlayTitle').textContent = g.emoji + ' ' + g.name;
+  document.getElementById('gameOverlayTitle').textContent = g.name;
   const content = document.getElementById('gameOverlayContent');
   content.innerHTML = '';
   _gameFs = false;
