@@ -2171,40 +2171,74 @@ const KNOWN_LOCAL_ICONS = {
   "zombs-royale": "https://images.crazygames.com/zombsroyale-io_16x9/auto/auto/zombsroyale-io_16x9-cover.jpg",
 };
 
+function _svgThumb(g) {
+  /* Generate a beautiful SVG card — always works, no network needed */
+  const c = g.color || '#3b82f6';
+  const hex2 = c + '44';
+  const name = g.name.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const em = encodeURIComponent(g.emoji || '🎮');
+  /* Pick contrasting accent from game color */
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 240'>
+    <defs>
+      <linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'>
+        <stop offset='0%' stop-color='${c}22'/>
+        <stop offset='100%' stop-color='#080818'/>
+      </linearGradient>
+      <radialGradient id='glow' cx='50%' cy='40%' r='55%'>
+        <stop offset='0%' stop-color='${c}55'/>
+        <stop offset='100%' stop-color='transparent'/>
+      </radialGradient>
+    </defs>
+    <rect width='180' height='240' fill='url(#bg)'/>
+    <rect width='180' height='240' fill='url(#glow)'/>
+    <rect x='1' y='1' width='178' height='238' rx='2' fill='none' stroke='${c}33' stroke-width='1'/>
+    <text x='90' y='118' font-size='64' text-anchor='middle' dominant-baseline='middle'>${g.emoji || '🎮'}</text>
+    <rect x='0' y='180' width='180' height='60' fill='rgba(0,0,0,0.55)'/>
+    <text x='90' y='208' font-family='system-ui,sans-serif' font-size='13' font-weight='700' fill='white' text-anchor='middle' dominant-baseline='middle'>${name}</text>
+    <rect x='60' y='222' width='60' height='2' rx='1' fill='${c}88'/>
+  </svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
 function _gameThumbHTML(g, big) {
   const slug = _gameSlug(g.name);
-  // Use known local icon if available, otherwise go straight to CDN (no 404s)
-  const localIcon = KNOWN_LOCAL_ICONS[slug] || null;
-  const cdn1   = _getBestThumb(g);
-  const fb4    = `https://img.cdn.famobi.com/portal/html5games/images/tmp/${slug.split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join('')}Teaser.jpg`;
-  const fb5    = `https://img.gamemonetize.com/${slug}/512x384.jpg`;
-  const firstSrc = localIcon || cdn1 || fb4;
-  const fb2 = localIcon ? (cdn1 || fb4) : fb4;
-  const fb3 = localIcon ? fb4 : fb5;
-  return `<div style="width:100%;aspect-ratio:3/4;overflow:hidden;background:linear-gradient(145deg,#1a1a2e,#0d0d1a);position:relative;flex-shrink:0;">
-    <img src="${firstSrc}"
-      data-fb2="${fb2}" data-fb3="${fb3}" data-fb4="${fb5}" data-step="0"
-      style="width:100%;height:100%;object-fit:cover;display:block;transition:opacity .2s;"
+  const svgSrc = _svgThumb(g);
+  /* Try CDN images as bonus — if they load they replace the SVG */
+  const slug2 = slug.replace(/-io$/, '');
+  const cdn1 = KNOWN_LOCAL_ICONS[slug] || GAME_THUMBS[g.name] || null;
+  const cdn2 = `https://images.crazygames.com/${slug}_16x9/auto/auto/${slug}_16x9-cover.jpg`;
+  const cdn3 = `https://imgs.crazygames.com/${slug}/auto/auto/${slug}-cover.jpg`;
+
+  return `<div style="width:100%;aspect-ratio:3/4;overflow:hidden;background:#0d0d1a;position:relative;flex-shrink:0;">
+    <img src="${svgSrc}"
+      data-cdn1="${cdn1||''}" data-cdn2="${cdn2}" data-cdn3="${cdn3}" data-tried="0"
+      style="width:100%;height:100%;object-fit:cover;display:block;"
+      onload="_imgTryCdn(this)"
       onerror="_imgFallback(this)" />
-    <div class="_thumb-emoji" style="display:none;width:100%;height:100%;position:absolute;top:0;left:0;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:linear-gradient(145deg,#1a1a2e,#0d0d1a);">
-      <span style="font-size:48px;line-height:1;">${g.emoji}</span>
-      <span style="font-family:-apple-system,sans-serif;font-size:11px;color:rgba(255,255,255,.35);text-align:center;padding:0 8px;">${g.name}</span>
-    </div>
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 55%,rgba(0,0,0,.7) 100%);pointer-events:none;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 55%,rgba(0,0,0,.65) 100%);pointer-events:none;"></div>
   </div>`;
 }
 
-function _imgFallback(img) {
-  const step = parseInt(img.dataset.step || '0');
-  const chain = [img.dataset.fb2, img.dataset.fb3, img.dataset.fb4, img.dataset.fb5, img.dataset.fb6];
-  if (step < chain.length && chain[step]) {
-    img.dataset.step = step + 1;
-    img.src = chain[step];
-  } else {
-    img.style.display = 'none';
-    const emo = img.parentNode.querySelector('._thumb-emoji');
-    if (emo) emo.style.display = 'flex';
+function _imgTryCdn(img) {
+  /* After SVG loads, silently try real CDN images in background */
+  if (img.dataset.tried === '0' && !img.src.startsWith('data:')) return;
+  if (img.dataset.tried !== '0') return;
+  img.dataset.tried = '1';
+  const cdns = [img.dataset.cdn1, img.dataset.cdn2, img.dataset.cdn3].filter(Boolean);
+  if (!cdns.length) return;
+  let i = 0;
+  function tryNext() {
+    if (i >= cdns.length) return;
+    const probe = new Image();
+    probe.onload = () => { img.src = cdns[i]; };
+    probe.onerror = () => { i++; tryNext(); };
+    probe.src = cdns[i];
   }
+  tryNext();
+}
+
+function _imgFallback(img) {
+  /* If even SVG fails (shouldn't), do nothing — SVG is always valid */
 }
 
 function _buildFeaturedCard(g) {
