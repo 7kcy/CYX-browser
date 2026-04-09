@@ -1014,6 +1014,25 @@
     }
     .game-tile:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 16px 40px rgba(0,0,0,0.7); border-color: rgba(255,255,255,0.16); }
     .game-tile:active { transform: translateY(-1px) scale(1.01); }
+    /* ── Hover action overlay ── */
+    .game-tile-actions {
+      position: absolute; inset: 0; border-radius: 16px;
+      background: rgba(0,0,0,0.72); backdrop-filter: blur(3px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+      opacity: 0; transition: opacity 0.18s ease;
+      pointer-events: none; z-index: 5;
+    }
+    .game-tile:hover .game-tile-actions { opacity: 1; pointer-events: all; }
+    .game-tile-action-btn {
+      display: flex; align-items: center; gap: 7px;
+      padding: 7px 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.10); color: #f0f0f0;
+      font-family: var(--font-display); font-size: 12px; font-weight: 700;
+      cursor: pointer; width: 110px; justify-content: center;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    }
+    .game-tile-action-btn:hover { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.4); transform: scale(1.05); }
+    .game-tile-action-btn.fav-active { color: #fbbf24; border-color: rgba(251,191,36,0.5); background: rgba(251,191,36,0.12); }
     .game-thumb-wrap {
       width: 100%; aspect-ratio: 1/1; overflow: hidden;
       flex-shrink: 0; display: flex; align-items: center; justify-content: center;
@@ -1323,7 +1342,7 @@
     </button>
   </div>
   <!-- Content area: padded sides, game centered -->
-  <div id="gameOverlayContent" style="flex:1;overflow:hidden;display:flex;align-items:stretch;justify-content:center;background:var(--bg);padding:12px 48px 12px 48px;"></div>
+  <div id="gameOverlayContent" style="flex:1;overflow:hidden;display:flex;align-items:stretch;justify-content:center;background:#000;padding:0;"></div>
 </div>
 
 <!-- ══ RESULTS ════════════════════════════════════════════════ -->
@@ -1838,18 +1857,18 @@ const CX_GAMES = [
   { id:40, name:'Happy Wheels',        cat:'arcade',   emoji:'🤪', color:'#ef4444', localPath:'/games/id40/index.html' },
 
   /* ── Arcade Built-in (srcdoc, no file needed) ── */
-  { id:41, name:'2048',                cat:'arcade',   emoji:'🔢', color:'#f59563', builtin:'g2048' },
-  { id:42, name:'Snake',               cat:'arcade',   emoji:'🐍', color:'#4caf50', builtin:'gsnake' },
-  { id:43, name:'Pong',                cat:'arcade',   emoji:'🏓', color:'#00bcd4', builtin:'gpong' },
+  { id:41, name:'2048',                cat:'arcade',   emoji:'🔢', color:'#f59563', localPath:'/games/id41/index.html' },
+  { id:42, name:'Snake',               cat:'arcade',   emoji:'🐍', color:'#4caf50', localPath:'/games/id42/index.html' },
+  { id:43, name:'Pong',                cat:'arcade',   emoji:'🏓', color:'#00bcd4', localPath:'/games/id43/index.html' },
 
   /* ── Puzzle ── */
-  { id:44, name:'Tetris',              cat:'puzzle',   emoji:'🟦', color:'#2196f3', builtin:'gtetris' },
-  { id:45, name:'Wordle',              cat:'puzzle',   emoji:'🟩', color:'#6aaa64', builtin:'gwordle' },
-  { id:46, name:'Minesweeper',         cat:'puzzle',   emoji:'💣', color:'#607d8b', builtin:'gmine' },
-  { id:47, name:'Memory Match',        cat:'puzzle',   emoji:'🃏', color:'#673ab7', builtin:'gmemory' },
-  { id:48, name:'Simon Says',          cat:'puzzle',   emoji:'🔴', color:'#ff5722', builtin:'gsimon' },
-  { id:49, name:'Breakout',            cat:'puzzle',   emoji:'🧱', color:'#e91e63', builtin:'gbreakout' },
-  { id:50, name:'Asteroids',           cat:'puzzle',   emoji:'🚀', color:'#9c27b0', builtin:'gasteroids' },
+  { id:44, name:'Tetris',              cat:'puzzle',   emoji:'🟦', color:'#2196f3', localPath:'/games/id44/index.html' },
+  { id:45, name:'Wordle',              cat:'puzzle',   emoji:'🟩', color:'#6aaa64', localPath:'/games/id45/index.html' },
+  { id:46, name:'Minesweeper',         cat:'puzzle',   emoji:'💣', color:'#607d8b', localPath:'/games/id46/index.html' },
+  { id:47, name:'Memory Match',        cat:'puzzle',   emoji:'🃏', color:'#673ab7', localPath:'/games/id47/index.html' },
+  { id:48, name:'Simon Says',          cat:'puzzle',   emoji:'🔴', color:'#ff5722', localPath:'/games/id48/index.html' },
+  { id:49, name:'Breakout',            cat:'puzzle',   emoji:'🧱', color:'#e91e63', localPath:'/games/id49/index.html' },
+  { id:50, name:'Asteroids',           cat:'puzzle',   emoji:'🚀', color:'#9c27b0', localPath:'/games/id50/index.html' },
   { id:51, name:'Cut the Rope',        cat:'puzzle',   emoji:'🐸', color:'#22c55e', localPath:'/games/id51/index.html' },
   { id:52, name:'Bob The Robber',      cat:'puzzle',   emoji:'🦹', color:'#374151', localPath:'/games/id52/index.html' },
   { id:53, name:'Mahjong',             cat:'puzzle',   emoji:'🀄', color:'#dc2626', localPath:'/games/id53/index.html' },
@@ -1891,8 +1910,8 @@ const CX_GAMES = [
   { id:83, name:'Pandemic',            cat:'strategy', emoji:'🦠', color:'#dc2626', localPath:'/games/id83/index.html' },
 
   /* ── Built-in offline ── */
-  { id:84, name:'Flappy Bird',         cat:'arcade',   emoji:'🐦', color:'#fde68a', builtin:'gflappy' },
-  { id:85, name:'Dino Run',            cat:'arcade',   emoji:'🦕', color:'#78716c', builtin:'gdino' },
+  { id:84, name:'Flappy Bird',         cat:'arcade',   emoji:'🐦', color:'#fde68a', localPath:'/games/id84/index.html' },
+  { id:85, name:'Dino Run',            cat:'arcade',   emoji:'🦕', color:'#78716c', localPath:'/games/id85/index.html' },
 
   /* ── 2 Player Games ── */
   { id:86, name:'Fireboy & Watergirl 2', cat:'2player', emoji:'🔥', color:'#ef4444', localPath:'/games/id33/index.html' },
@@ -1903,11 +1922,11 @@ const CX_GAMES = [
   { id:91, name:'Basketball Stars',    cat:'2player',  emoji:'🏀', color:'#f97316', localPath:'/games/id68/index.html' },
   { id:92, name:'Football Legends',    cat:'2player',  emoji:'🏈', color:'#7c3aed', localPath:'/games/id71/index.html' },
   { id:93, name:'Bonk.io',             cat:'2player',  emoji:'🏀', color:'#f97316', localPath:'/games/id11/index.html' },
-  { id:94, name:'Pong 2P',             cat:'2player',  emoji:'🏓', color:'#00bcd4', builtin:'gpong' },
+  { id:94, name:'Pong 2P',             cat:'2player',  emoji:'🏓', color:'#00bcd4', localPath:'/games/id43/index.html' },
   { id:95, name:'Stickman Soccer',     cat:'2player',  emoji:'⚽', color:'#16a34a', localPath:'/games/id75/index.html' },
 
   /* ── Space Waves ── */
-  { id:96, name:'Space Waves',         cat:'arcade',   emoji:'🌊', color:'#0ea5e9', builtin:'gspacewaves' },
+  { id:96, name:'Space Waves',         cat:'arcade',   emoji:'🌊', color:'#0ea5e9', localPath:'/games/id96/index.html' },
   { id:97, name:'Tunnel Rush',         cat:'arcade',   emoji:'🌀', color:'#a855f7', localPath:'/games/id34/index.html' },
 ];
 
@@ -2158,13 +2177,106 @@ function _gameThumbHTML(g, big) {
     'Burnout Drift':        'https://images.crazygames.com/burnout-drift_16x9/auto/auto/burnout-drift_16x9-cover.jpg',
   };
 
-  const primaryUrl = GAME_ICON_URLS[g.name] || GAME_THUMBS[g.name];
-  const slug = _gameSlug(g.name);
-  const autoThumb = 'https://images.crazygames.com/' + slug + '_16x9/auto/auto/' + slug + '_16x9-cover.jpg';
-  const famobi = 'https://img.cdn.famobi.com/portal/html5games/images/tmp/' + slug.split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join('') + 'Teaser.jpg';
+  /* ── Exact local icon map — correct extension per file ── */
+  const GAME_LOCAL_ICONS = {
+    "Subway Surfers": "/icons/subway-surfers.png",
+    "Slope": "/icons/slope.png",
+    "1v1.LOL": "/icons/1v1-lol.png",
+    "Run 3": "/icons/run-3.png",
+    "Drift Hunters": "/icons/drift-hunters.png",
+    "Krunker": "/icons/krunker.svg",
+    "Shell Shockers": "/icons/shell-shockers.png",
+    "Paper.io 2": "/icons/paper-io-2.png",
+    "Agar.io": "/icons/agar-io.png",
+    "Slither.io": "/icons/slither-io.png",
+    "Bonk.io": "/icons/bonk-io.png",
+    "Diep.io": "/icons/diep-io.png",
+    "Zombs Royale": "/icons/zombs-royale.svg",
+    "Surviv.io": "/icons/surviv-io.svg",
+    "Moomoo.io": "/icons/moomoo-io.png",
+    "Wings.io": "/icons/wings-io.png",
+    "Wormate.io": "/icons/wormate-io.png",
+    "Narrow.one": "/icons/narrow-one.png",
+    "Ev.io": "/icons/ev-io.svg",
+    "Buildnow.gg": "/icons/buildnow-gg.png",
+    "Venge.io": "/icons/venge-io.png",
+    "Getaway Shootout": "/icons/getaway-shootout.png",
+    "Rooftop Snipers": "/icons/rooftop-snipers.png",
+    "Minecraft Classic": "/icons/minecraft-classic.png",
+    "Cookie Clicker": "/icons/cookie-clicker.svg",
+    "Geometry Dash Lite": "/icons/geometry-dash-lite.svg",
+    "Friday Night Funkin": "/icons/friday-night-funkin.png",
+    "Crossy Road": "/icons/crossy-road.png",
+    "Vex 7": "/icons/vex-7.svg",
+    "Drift Boss": "/icons/drift-boss.png",
+    "Stickman Hook": "/icons/stickman-hook.png",
+    "Moto X3M": "/icons/moto-x3m.png",
+    "Fireboy & Watergirl": "/icons/fireboy-watergirl.svg",
+    "Fireboy & Watergirl 2": "/icons/fireboy-watergirl-2.svg",
+    "Tunnel Rush": "/icons/tunnel-rush.png",
+    "Red Ball 4": "/icons/red-ball-4.png",
+    "Temple Run 2": "/icons/temple-run-2.png",
+    "Jetpack Joyride": "/icons/jetpack-joyride.png",
+    "Hole.io": "/icons/hole-io.png",
+    "Space is Key": "/icons/space-is-key.png",
+    "Happy Wheels": "/icons/happy-wheels.png",
+    "2048": "/icons/2048.png",
+    "Snake": "/icons/snake.png",
+    "Pong": "/icons/pong.svg",
+    "Pong 2P": "/icons/pong-2p.svg",
+    "Tetris": "/icons/tetris.png",
+    "Wordle": "/icons/wordle.svg",
+    "Minesweeper": "/icons/minesweeper.png",
+    "Memory Match": "/icons/memory-match.svg",
+    "Simon Says": "/icons/simon-says.svg",
+    "Breakout": "/icons/breakout.png",
+    "Asteroids": "/icons/asteroids.svg",
+    "Cut the Rope": "/icons/cut-the-rope.png",
+    "Bob The Robber": "/icons/bob-the-robber.png",
+    "Mahjong": "/icons/mahjong.png",
+    "Sudoku": "/icons/sudoku.png",
+    "Solitaire": "/icons/solitaire.png",
+    "Bloxorz": "/icons/bloxorz.png",
+    "Snail Bob": "/icons/snail-bob.svg",
+    "Gold Miner": "/icons/gold-miner.png",
+    "Cubes 2048": "/icons/cubes-2048.svg",
+    "Smash Karts": "/icons/smash-karts.png",
+    "Moto X3M Pool Party": "/icons/moto-x3m-pool-party.png",
+    "Road Fury": "/icons/road-fury.svg",
+    "Traffic Jam 3D": "/icons/traffic-jam-3d.svg",
+    "Burnout Drift": "/icons/burnout-drift.png",
+    "Racing Limits": "/icons/racing-limits.png",
+    "Highway Racer 3D": "/icons/highway-racer-3d.svg",
+    "Crazy Cars": "/icons/crazy-cars.png",
+    "Basketball Stars": "/icons/basketball-stars.png",
+    "Soccer Random": "/icons/soccer-random.png",
+    "Boxing Random": "/icons/boxing-random.png",
+    "Football Legends": "/icons/football-legends.png",
+    "Tennis Legends": "/icons/tennis-legends.png",
+    "Golf Battle": "/icons/golf-battle.svg",
+    "Penalty Shooters": "/icons/penalty-shooters.png",
+    "Stickman Soccer": "/icons/stickman-soccer.svg",
+    "Bloons TD 5": "/icons/bloons-td-5.svg",
+    "Kingdom Rush": "/icons/kingdom-rush.png",
+    "Chess": "/icons/chess.png",
+    "Checkers": "/icons/checkers.png",
+    "Tic Tac Toe": "/icons/tic-tac-toe.png",
+    "Backgammon": "/icons/backgammon.png",
+    "Battleship": "/icons/battleship.png",
+    "Pandemic": "/icons/pandemic.svg",
+    "Flappy Bird": "/icons/flappy-bird.png",
+    "Dino Run": "/icons/dino-run.png",
+    "Space Waves": "/icons/space-waves.png",
+  };
 
-  /* ── Fallback chain: primary icon → autoThumb → famobi → canvas icon ── */
-  const chain = [autoThumb, famobi].filter(u => u !== primaryUrl);
+  const slug = _gameSlug(g.name);
+  const localIcon = GAME_LOCAL_ICONS[g.name] || null;
+  const cdnThumb = GAME_ICON_URLS[g.name] || GAME_THUMBS[g.name] ||
+    'https://images.crazygames.com/' + slug + '_16x9/auto/auto/' + slug + '_16x9-cover.jpg';
+
+  /* ── Fallback chain: known local icon → CDN thumb → canvas ── */
+  const startUrl = localIcon || cdnThumb;
+  const chain = localIcon ? [cdnThumb] : [];
   const onerror = `(function(el){
     var ch=${JSON.stringify(chain)};
     var i=parseInt(el.dataset.fi||0);
@@ -2172,11 +2284,8 @@ function _gameThumbHTML(g, big) {
     else{el.style.display='none';el.nextElementSibling.style.display='flex';}
   })(this)`.replace(/\s+/g,' ');
 
-  /* ── Canvas icon: generated per-game, looks like a real app icon ── */
-  const canvasIcon = `_makeCanvasIcon(${JSON.stringify(g.name)},${JSON.stringify(g.color)},${JSON.stringify(g.emoji)},this.parentElement)`;
-
   return `<div style="width:100%;aspect-ratio:1/1;overflow:hidden;background:${g.color}22;border-radius:0;position:relative;flex-shrink:0;">
-    <img src="${primaryUrl || autoThumb}"
+    <img src="${startUrl}"
       style="width:100%;height:100%;object-fit:cover;display:block;"
       onerror="${onerror.replace(/"/g,'&quot;')}" data-fi="0" />
     <div class="_cx-canvas-fallback" style="display:none;width:100%;height:100%;position:absolute;top:0;left:0;align-items:center;justify-content:center;">
@@ -2351,12 +2460,41 @@ function _buildTile(g) {
   const tile = document.createElement('div');
   tile.className = 'game-tile';
   tile.title = g.name;
+  const isFav = _isFavorite(g.name);
+  tile.innerHTML = _gameThumbHTML(g, false) +
+    `<div class="game-tile-actions">
+      <button class="game-tile-action-btn" onclick="event.stopPropagation();openGameOverlay(${JSON.stringify(g).replace(/"/g,'&quot;')})">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Play
+      </button>
+      <button class="game-tile-action-btn${isFav?' fav-active':''}" id="fav-btn-${g.id}" onclick="event.stopPropagation();_toggleFavoriteTile(this,${JSON.stringify(g).replace(/"/g,'&quot;')})">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg> ${isFav?'Unfavorite':'Favorite'}
+      </button>
+    </div>` +
+    `<div class="game-name">${g.name}</div>`;
   tile.onclick = () => openGameOverlay(g);
-  tile.innerHTML = _gameThumbHTML(g, false) + `<div class="game-name">${g.name}</div>`;
   return tile;
 }
 
-let _gameFs = false;
+function _getFavorites() {
+  try { return JSON.parse(localStorage.getItem('cx_favorites') || '[]'); } catch(e) { return []; }
+}
+function _isFavorite(name) { return _getFavorites().includes(name); }
+function _toggleFavoriteTile(btn, g) {
+  let favs = _getFavorites();
+  const idx = favs.indexOf(g.name);
+  if (idx === -1) {
+    favs.push(g.name);
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg> Unfavorite';
+    btn.classList.add('fav-active');
+  } else {
+    favs.splice(idx, 1);
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg> Favorite';
+    btn.classList.remove('fav-active');
+  }
+  localStorage.setItem('cx_favorites', JSON.stringify(favs));
+}
+
+
 
 /* Floating exit-fullscreen button injected when in fs mode */
 function _ensureFsExitBtn() {
@@ -2378,7 +2516,7 @@ function openGameOverlay(g) {
   _addRecentGame(g.name);
 
   const overlay = document.getElementById('gameOverlay');
-  document.getElementById('gameOverlayTitle').textContent = g.emoji + ' ' + g.name;
+  document.getElementById('gameOverlayTitle').textContent = g.name;
   const content = document.getElementById('gameOverlayContent');
   content.innerHTML = '';
   _gameFs = false;
@@ -2386,11 +2524,11 @@ function openGameOverlay(g) {
 
   const wrap = document.createElement('div');
   wrap.id = 'gameIframeWrap';
-  wrap.style.cssText = 'flex:1;display:flex;align-items:stretch;border-radius:12px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.6);border:1px solid var(--border);background:#000;';
+  wrap.style.cssText = 'flex:1;display:flex;align-items:stretch;overflow:hidden;background:#000;width:100%;';
 
   const iframe = document.createElement('iframe');
   iframe.id = 'gameIframe';
-  iframe.style.cssText = 'width:100%;height:100%;border:none;background:#000;border-radius:12px;';
+  iframe.style.cssText = 'width:100%;height:100%;border:none;background:#000;';
   iframe.allow = 'autoplay; fullscreen; pointer-lock';
   iframe.setAttribute('allowfullscreen', '');
 
@@ -2452,7 +2590,7 @@ function _applyGameLayout() {
   } else {
     overlay.style.top = 'var(--topbar-h)';
     if (bar) bar.style.display = 'flex';
-    if (content) content.style.padding = '12px 48px 12px 48px';
+    if (content) content.style.padding = '0';
   }
 }
 
